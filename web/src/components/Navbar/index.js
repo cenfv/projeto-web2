@@ -11,18 +11,18 @@ export function Navbar() {
               src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
               alt="logo"
             />
-            <Link to="/">Home</Link>
-            <Link to="/about">Quem somos</Link>
-            <Link to="/contact">Contato</Link>
-            <Link to="/news">Novidades</Link>
+            <Link to="/" className="font-medium text-gray-500 hover:text-indigo-600">Home</Link>
+            <Link to="/about" className="font-medium text-gray-500 hover:text-indigo-600">Quem somos</Link>
+            <Link to="/contact" className="font-medium text-gray-500 hover:text-indigo-600">Contato</Link>
+            <Link to="/news" className="font-medium text-gray-500 hover:text-indigo-600">Novidades</Link>
           </div>
 
           <div className="flex space-x-10">
             <button>
-              <Link to="/login">Entrar</Link>
+              <Link to="/login" className="text-base font-medium text-gray-500 hover:text-indigo-600">Entrar</Link>
             </button>
             <button>
-              <Link to="/register">Inscrever-se</Link>
+              <Link to="/register" className="w-full flex  px-4 py-2  rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Inscrever-se</Link>
             </button>
           </div>
         </div>
