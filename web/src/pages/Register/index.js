@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Register() {
   const [firstName, setFirstName] = useState(null);
@@ -9,7 +9,8 @@ export function Register() {
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null)
   const [gender, setGender] = useState(null);
-
+  let navigate = useNavigate();
+  
   return (
     <div>
       <div className="flex max-w-6xl m-auto justify-center -mt-10">
@@ -128,7 +129,10 @@ export function Register() {
                   password: password,
                   gender: gender
                 }).then((response) => {
-                  console.log(response.data);
+                  if (response.status === 200 && response.statusText === "OK"){
+                    console.log("Usuário cadastrado com sucesso"); 
+                    navigate('/login');
+                  }
                 });
               }
               }
