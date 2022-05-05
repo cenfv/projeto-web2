@@ -3,13 +3,14 @@ import './global.css';
 
 import { Login } from './pages/Login';
 import { Cadastro } from './pages/Cadastro';
+import { Home } from './pages/Login/Home';
 
 function App() {
   return(
     <BrowserRouter>
     <Routes>
-      <Route exact path="/" element={<Login />} />  
-      <Route exact path="/cadastro" element={<Cadastro />} />  
+      <Route exact path="/" element={<Home />} />  
+      <Route exact path="/login" element={<Login />} />
     </Routes>
     </BrowserRouter>
   )
