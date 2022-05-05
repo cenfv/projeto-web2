@@ -19,10 +19,10 @@ export function Navbar() {
 
           <div className="flex space-x-10">
             <button>
-              <Link to="/">Entrar</Link>
+              <Link to="/login">Entrar</Link>
             </button>
             <button>
-              <Link to="/">Inscrever-se</Link>
+              <Link to="/register">Inscrever-se</Link>
             </button>
           </div>
         </div>

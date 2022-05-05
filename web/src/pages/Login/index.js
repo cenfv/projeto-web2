@@ -3,10 +3,10 @@ import { Navbar } from "../../components/Navbar"
 
 export function Login() {
     return (
-        <div>
-            <div className="flex max-w-6xl m-auto justify-center -mt-10">
-                <div className="flex min-h-screen items-center">
-                    <div class="flex flex-col p-6 rounded-lg shadow-lg bg-white max-w-sm justify-center">
+        <div className="bg-indigo-500">
+            <div className="flex max-w-6xl m-auto justify-center ">
+                <div className="flex min-h-screen items-center ">
+                    <div class="flex flex-col p-6 rounded-lg shadow-lg bg-white max-w-sm justify-center -mt-10">
                         <img
                             className="w-1/2 h-medium self-center"
                             src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
