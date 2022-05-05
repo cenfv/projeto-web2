@@ -11,6 +11,7 @@ function App() {
     <Routes>
       <Route exact path="/" element={<Home />} />  
       <Route exact path="/login" element={<Login />} />
+      <Route exact path="/register" element={<Cadastro />} />
     </Routes>
     </BrowserRouter>
   )
