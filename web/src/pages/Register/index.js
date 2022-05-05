@@ -1,14 +1,15 @@
+import Axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Register() {
-  const [firstName,setFirstName] = useState(null);
-  const [lastName,setLastName] = useState(null);
-  const [email,setEmail] = useState(null);
-  const [password,setPassword] = useState(null);
-  const [confirmPassword,setConfirmPassword] = useState(null)
-  const [gender,setGender] = useState(null);
-  
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null)
+  const [gender, setGender] = useState(null);
+
   return (
     <div>
       <div className="flex max-w-6xl m-auto justify-center -mt-10">
@@ -32,7 +33,7 @@ export function Register() {
                 required
                 className="mr-1 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Primeiro nome"
-                onChange={(event)=> setFirstName(event.target.value)}
+                onChange={(event) => setFirstName(event.target.value)}
               />
               <input
                 id="sobrenome"
@@ -42,7 +43,7 @@ export function Register() {
                 required
                 className="appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Último nome"
-                onChange={(event)=> setLastName(event.target.value)}
+                onChange={(event) => setLastName(event.target.value)}
               />
             </div>
 
@@ -54,7 +55,7 @@ export function Register() {
               required
               className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email"
-              onChange={(event)=> setEmail(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
 
             <input
@@ -65,7 +66,7 @@ export function Register() {
               required
               className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Senha"
-              onChange={(event)=> setPassword(event.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
 
             <input
@@ -76,7 +77,7 @@ export function Register() {
               required
               className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Confirmar senha"
-              onChange={(event)=> setConfirmPassword(event.target.value)}
+              onChange={(event) => setConfirmPassword(event.target.value)}
             />
 
             <label className="font-medium text-black-500 mt-3">Gênero</label>
@@ -87,7 +88,7 @@ export function Register() {
                   id="masculino"
                   name="masculino"
                   value="Masculino"
-                  onChange={()=>setGender("masculino")}
+                  onChange={() => setGender("masculino")}
                   checked={gender === 'masculino'}
                 />
                 <label className="ml-1 text-base" htmlFor="masculino" >Masculino</label>
@@ -99,7 +100,7 @@ export function Register() {
                   id="feminino"
                   name="feminino"
                   value="Feminino"
-                  onChange={()=>setGender("feminino")}
+                  onChange={() => setGender("feminino")}
                   checked={gender === 'feminino'}
                 />
                 <label className="ml-1 text-base" htmlFor="feminino" >Feminino</label>
@@ -112,14 +113,25 @@ export function Register() {
                   name="outro"
                   value="Outro"
                   checked={gender === 'outro'}
-                  onChange={()=>setGender("outro")}
+                  onChange={() => setGender("outro")}
                 />
                 <label className="ml-1 text-base" htmlFor="outro" >Outro</label>
               </div>
             </div>
 
             <button
-              onClick={()=>console.log(firstName+"\n"+lastName+"\n"+email+"\n"+password+"\n"+confirmPassword+"\n"+gender)}
+              onClick={() => {
+                Axios.post("http://localhost:3001/User", {
+                  firstName: firstName,
+                  lastName: lastName,
+                  email: email,
+                  password: password,
+                  gender: gender
+                }).then((response) => {
+                  console.log(response.data);
+                });
+              }
+              }
               type="submit"
               className="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
