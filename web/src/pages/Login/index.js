@@ -51,7 +51,7 @@ export function Login() {
                             </div>
 
                             <div className="text-sm">
-                                <Link to="/forgot_password" className="font-medium text-indigo-600 hover:underline">
+                                <Link to="/recover" className="font-medium text-indigo-600 hover:underline">
                                     Esqueceu sua senha?
                                 </Link>
                             </div>
