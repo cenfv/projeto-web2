@@ -71,7 +71,7 @@ export function Login() {
             </div>
             <button
               onClick={() => {
-                Axios.post("http://localhost:3001/auth", {
+                Axios.post("https://projeto-web2-nodejs.herokuapp.com/auth", {
                   email: email,
                   password: password,
                 }).then((response) => {

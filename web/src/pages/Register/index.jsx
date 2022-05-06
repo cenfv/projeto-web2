@@ -128,7 +128,7 @@ export function Register() {
 
             <button
               onClick={() => {
-                Axios.post('http://localhost:3001/User', {
+                Axios.post('https://projeto-web2-nodejs.herokuapp.com/user', {
                   firstName: firstName,
                   lastName: lastName,
                   email: email,
