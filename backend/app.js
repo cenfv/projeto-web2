@@ -7,6 +7,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./src/routes/index');
 var userRouter = require('./src/routes/user');
+var authRouter = require('./src/routes/auth');
 
 var app = express();
 var mongodbConnection = require('./modules/mongodb/mongodb-connection');
@@ -27,6 +28,7 @@ mongodbConnection();
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/auth', authRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

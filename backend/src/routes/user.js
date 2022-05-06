@@ -6,12 +6,22 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', async function (req, res, next) {
   const { firstName, lastName, email, password, gender } = req.body;
-  userController.createUser(firstName, lastName, email, password, gender);
-  res.json({
-    firstName, lastName, email, gender
-  });
+  try {
+    user = await userController.createUser(firstName, lastName, email, password, gender);
+    console.log(user)
+    res.status(201).json({
+      user
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "There was an error during user creation"
+    })
+  }
+
+
 });
 
 
