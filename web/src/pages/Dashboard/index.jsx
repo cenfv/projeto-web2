@@ -1,22 +1,9 @@
-import { Footer } from '../../components/Footer';
-import { DashboardNavBar } from '../../components/DashboardNavBar';
-import { useEffect, useState } from 'react';
-import Axios from 'axios';
+import { Footer } from "../../components/Footer";
+import { DashboardNavBar } from "../../components/DashboardNavBar";
+import { useState } from "react";
 
 export function Dashboard() {
-  const [text, setText] = useState('');
-  useEffect(() => {
-    Axios.get('http://localhost:3001/auth', {
-      headers: {
-        authorization: localStorage.getItem('authorization'),
-      },
-    }).then((response) => {
-      if (response.status === 200 || response.statusText === 'OK') {
-        setText(response.data.user.firstName);
-        console.log(response.data.user.firstName);
-      }
-    });
-  }, []);
+  const [text, setText] = useState("");
 
   return (
     <div>

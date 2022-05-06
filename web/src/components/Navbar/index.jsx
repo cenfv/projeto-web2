@@ -1,6 +1,11 @@
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { selectUser, logout } from "../../redux/userSlice";
 
-export function Navbar({ loggedUser, userName }) {
+export function Navbar() {
+  const { name, isLogged } = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <div className="border-b-2 border-gray-100">
       <div className=" py-7 items-center justify-center max-w-6xl mx-auto ">
@@ -36,22 +41,24 @@ export function Navbar({ loggedUser, userName }) {
               Novidades
             </Link>
           </div>
-          {loggedUser ? (
+          {isLogged ? (
             <>
               <div className="flex space-x-10">
                 <span className="text-base font-medium text-gray-500">
-                  Seja bem-vindo, {userName}
+                  Seja bem-vindo, {name}
                 </span>
                 <Link
                   onClick={() => {
-                    localStorage.removeItem('authorization');
+                    localStorage.removeItem("authorization");
+                    dispatch(logout());
+                    navigate("/dashboard");
                   }}
                   to="/login"
                   className="text-base font-medium text-gray-500 hover:text-indigo-600"
                 >
                   Sair
                 </Link>
-              </div>{' '}
+              </div>{" "}
               <button>
                 <Link
                   to="/dashboard"

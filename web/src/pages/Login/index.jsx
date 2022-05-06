@@ -1,11 +1,14 @@
-import Axios from 'axios';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { changeUser } from "../../redux/userSlice";
 
 export function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="bg-indigo-500">
       <div className="flex max-w-6xl m-auto justify-center ">
@@ -68,19 +71,19 @@ export function Login() {
             </div>
             <button
               onClick={() => {
-                Axios.post('http://localhost:3001/auth', {
+                Axios.post("http://localhost:3001/auth", {
                   email: email,
                   password: password,
                 }).then((response) => {
-                  if (response.status === 200 || response.statusText === 'OK') {
-                    console.log('Usuário autenticado com sucesso');
-                    console.log(response.data.token);
+                  if (response.status === 200 || response.statusText === "OK") {
+                    console.log(response.data.user.firstName);
+                    dispatch(changeUser(response.data.user.firstName));
                     localStorage.setItem(
-                      'authorization',
-                      `Bearer ${response.data.token}`,
+                      "authorization",
+                      `Bearer ${response.data.token}`
                     );
-                    console.log(localStorage.getItem('authorization'));
-                    navigate('/dashboard');
+                    console.log(localStorage.getItem("authorization"));
+                    navigate("/dashboard");
                   }
                 });
               }}
