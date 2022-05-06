@@ -6,6 +6,7 @@ import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { Recover } from './pages/Recover';
 import { About } from './pages/About';
+import { Dashboard } from './pages/Dashboard';
 
 function App() {
   return(
@@ -16,6 +17,7 @@ function App() {
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/recover" element={<Recover />} />
       <Route exact path="/about" element={<About />} />
+      <Route exact path="/dashboard" element={<Dashboard />} />
     </Routes>
     </BrowserRouter>
   )

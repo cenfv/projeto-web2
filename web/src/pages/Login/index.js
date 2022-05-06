@@ -1,9 +1,11 @@
+import Axios from "axios"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export function Login() {
-    const [email,setEmail] = useState(null)
-    const [password,setPassword] = useState(null)
+    const [email,setEmail] = useState(null);
+    const [password,setPassword] = useState(null);
+    let navigate = useNavigate();
     return (
         <div className="bg-indigo-500">
             <div className="flex max-w-6xl m-auto justify-center ">
@@ -58,7 +60,20 @@ export function Login() {
 
                         </div>
                         <button
-                            onClick={()=>console.log(email+","+password)}
+                            onClick={()=>{
+                                Axios.post("http://localhost:3001/auth", {
+                                    email: email,
+                                    password: password,
+                                }).then((response) => {
+                                    if (response.status === 200 || response.statusText === "OK") {
+                                        console.log("Usuário autenticado com sucesso");
+                                        console.log(response.data.token);
+                                        localStorage.setItem("authorization",`bearer ${response.data.token}`);
+                                        console.log(localStorage.getItem("authorization"));
+                                        navigate('/dashboard');
+                                    }
+                                });
+                            }}
                             type="submit"
                             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >

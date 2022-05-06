@@ -131,7 +131,6 @@ export function Register() {
                 }).then((response) => {
                   if (response.status === 201 || response.statusText === "OK"){
                     console.log("Usuário cadastrado com sucesso"); 
-                    console.log(response)
                     navigate('/login');
                   }
                 });
