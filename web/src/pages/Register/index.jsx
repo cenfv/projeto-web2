@@ -1,16 +1,16 @@
-import Axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Axios from 'axios';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Register() {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null)
+  const [confirmPassword, setConfirmPassword] = useState(null);
   const [gender, setGender] = useState(null);
   let navigate = useNavigate();
-  
+
   return (
     <div>
       <div className="flex max-w-6xl m-auto justify-center -mt-10">
@@ -89,10 +89,12 @@ export function Register() {
                   id="masculino"
                   name="masculino"
                   value="Masculino"
-                  onChange={() => setGender("masculino")}
+                  onChange={() => setGender('masculino')}
                   checked={gender === 'masculino'}
                 />
-                <label className="ml-1 text-base" htmlFor="masculino" >Masculino</label>
+                <label className="ml-1 text-base" htmlFor="masculino">
+                  Masculino
+                </label>
               </div>
 
               <div>
@@ -101,10 +103,12 @@ export function Register() {
                   id="feminino"
                   name="feminino"
                   value="Feminino"
-                  onChange={() => setGender("feminino")}
+                  onChange={() => setGender('feminino')}
                   checked={gender === 'feminino'}
                 />
-                <label className="ml-1 text-base" htmlFor="feminino" >Feminino</label>
+                <label className="ml-1 text-base" htmlFor="feminino">
+                  Feminino
+                </label>
               </div>
 
               <div>
@@ -114,28 +118,29 @@ export function Register() {
                   name="outro"
                   value="Outro"
                   checked={gender === 'outro'}
-                  onChange={() => setGender("outro")}
+                  onChange={() => setGender('outro')}
                 />
-                <label className="ml-1 text-base" htmlFor="outro" >Outro</label>
+                <label className="ml-1 text-base" htmlFor="outro">
+                  Outro
+                </label>
               </div>
             </div>
 
             <button
               onClick={() => {
-                Axios.post("http://localhost:3001/User", {
+                Axios.post('http://localhost:3001/User', {
                   firstName: firstName,
                   lastName: lastName,
                   email: email,
                   password: password,
-                  gender: gender
+                  gender: gender,
                 }).then((response) => {
-                  if (response.status === 201 || response.statusText === "OK"){
-                    console.log("Usuário cadastrado com sucesso"); 
+                  if (response.status === 201 || response.statusText === 'OK') {
+                    console.log('Usuário cadastrado com sucesso');
                     navigate('/login');
                   }
                 });
-              }
-              }
+              }}
               type="submit"
               className="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >

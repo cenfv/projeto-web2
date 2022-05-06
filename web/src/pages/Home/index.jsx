@@ -1,63 +1,59 @@
-import { Footer } from "../../components/Footer";
-import { Navbar } from "../../components/Navbar";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import  Axios  from "axios";
+import { Footer } from '../../components/Footer';
+import { Navbar } from '../../components/Navbar';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Axios from 'axios';
 
 export function Home() {
-  const [loggedUser,setLoggedUser] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [loggedUser, setLoggedUser] = useState(false);
+  const [userName, setUserName] = useState('');
   useEffect(() => {
-    Axios.get("http://localhost:3001/auth", {
-        headers: {
-            "authorization": localStorage.getItem("authorization")
-        }
+    Axios.get('http://localhost:3001/auth', {
+      headers: {
+        authorization: localStorage.getItem('authorization'),
+      },
     }).then((response) => {
-        if (response.status === 200 || response.statusText === "OK") {
-            console.log(response.data.user.firstName);
-            setLoggedUser(true);
-            setUserName(response.data.user.firstName)
-        }
-    })
-}, [])
+      if (response.status === 200 || response.statusText === 'OK') {
+        console.log(response.data.user.firstName);
+        setLoggedUser(true);
+        setUserName(response.data.user.firstName);
+      }
+    });
+  }, []);
   return (
     <div>
-      <Navbar loggedUser={loggedUser} userName={userName}/>
-        <main className="mt-10 mx-auto max-w-6xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
-          <div className="sm:text-center lg:text-left">
-            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-              <h1 className="block">
-                Ferramenta para enriquecer
-              </h1>
-              <h1 className="block text-indigo-600 xl:inline">
-                seus estudos
-              </h1>
-            </h1>
-            <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-              fugiat aliqua.
-            </p>
-            <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-              <div className="rounded-md shadow">
-                <Link
-                  to="/register"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
-                >
-                  Começar agora!
-                </Link>
-              </div>
-              <div className="mt-3 sm:mt-0 sm:ml-3">
-                <Link
-                  to="/about"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10"
-                >
-                  Sobre
-                </Link>
-              </div>
+      <Navbar loggedUser={loggedUser} userName={userName} />
+      <main className="mt-10 mx-auto max-w-6xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
+        <div className="sm:text-center lg:text-left">
+          <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <h1 className="block">Ferramenta para enriquecer</h1>
+            <h1 className="block text-indigo-600 xl:inline">seus estudos</h1>
+          </h1>
+          <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
+            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
+            fugiat aliqua.
+          </p>
+          <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div className="rounded-md shadow">
+              <Link
+                to="/register"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+              >
+                Começar agora!
+              </Link>
+            </div>
+            <div className="mt-3 sm:mt-0 sm:ml-3">
+              <Link
+                to="/about"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10"
+              >
+                Sobre
+              </Link>
             </div>
           </div>
-        </main>
+        </div>
+      </main>
       <div className="mb-5 fixed left-0 bottom-0 w-full">
         <Footer />
       </div>
