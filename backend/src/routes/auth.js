@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var userController = require("../controllers/userController");
-var jwt = require("jsonwebtoken");
+const express = require('express');
+const router = express.Router();
+const userController = require("../controllers/userController");
+const jwt = require("jsonwebtoken");
 
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');
@@ -9,7 +9,6 @@ router.get('/', function (req, res, next) {
   
 
 router.post('/', async function(req, res, next) {
-    console.log( "teste" );
     const { email, password } = req.body;
 
     try {

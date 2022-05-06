@@ -12,7 +12,6 @@ var authRouter = require('./src/routes/auth');
 var app = express();
 var mongodbConnection = require('./modules/mongodb/mongodb-connection');
 // view engine setup
-var createUser = require("./src/controllers/userController");
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

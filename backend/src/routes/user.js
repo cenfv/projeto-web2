@@ -1,9 +1,22 @@
-var express = require('express');
-var router = express.Router();
-var userController = require("../controllers/userController");
+const express = require('express');
+const router = express.Router();
+const userController = require("../controllers/userController");
+const checkToken = require('../middlewares/checkToken');
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
+router.get('/:id',checkToken.checkTokenBearer, async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const user = await userController.getUserById(id);
+    res.status(200).json({
+      user
+    });
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+      msg: "User not found"
+    })
+  }
+  
 });
 
 router.post('/', async function (req, res, next) {
@@ -12,7 +25,7 @@ router.post('/', async function (req, res, next) {
     user = await userController.createUser(firstName, lastName, email, password, gender);
     console.log(user)
     res.status(201).json({
-      user
+      firstName,lastName,email,gender
     });
   } catch (err) {
     console.log(err);
