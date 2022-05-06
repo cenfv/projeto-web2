@@ -68,7 +68,7 @@ export function Login() {
                                     if (response.status === 200 || response.statusText === "OK") {
                                         console.log("Usuário autenticado com sucesso");
                                         console.log(response.data.token);
-                                        localStorage.setItem("authorization",`bearer ${response.data.token}`);
+                                        localStorage.setItem("authorization",`Bearer ${response.data.token}`);
                                         console.log(localStorage.getItem("authorization"));
                                         navigate('/dashboard');
                                     }

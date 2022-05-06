@@ -10,6 +10,17 @@ exports.createUser = async (firstName, lastName, email, password, gender) => {
     return res;
    
 }
+exports.updateUser = async (id, firstName, lastName, email, password, gender) => {
+    console.log("entrou update");
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password,salt);
+
+    const user = await User.findById(id);
+    console.log(user);
+    const res = await user.updateOne({firstName, lastName, email, password, gender});
+    return res;
+   
+}
 exports.userAuth = async(email,password) =>{
     const user = await User.findOne({ email: email })
     const checkPassword = await bcrypt.compare(password,user.password);

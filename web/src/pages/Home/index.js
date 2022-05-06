@@ -1,11 +1,28 @@
 import { Footer } from "../../components/Footer";
 import { Navbar } from "../../components/Navbar";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import  Axios  from "axios";
 
 export function Home() {
+  const [loggedUser,setLoggedUser] = useState(false);
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    Axios.get("http://localhost:3001/auth", {
+        headers: {
+            "authorization": localStorage.getItem("authorization")
+        }
+    }).then((response) => {
+        if (response.status === 200 || response.statusText === "OK") {
+            console.log(response.data.user.firstName);
+            setLoggedUser(true);
+            setUserName(response.data.user.firstName)
+        }
+    })
+}, [])
   return (
     <div>
-      <Navbar />
+      <Navbar loggedUser={loggedUser} userName={userName}/>
         <main className="mt-10 mx-auto max-w-6xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
           <div className="sm:text-center lg:text-left">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
