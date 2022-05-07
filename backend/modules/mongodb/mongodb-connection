@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+mongoose.set("runValidators", true);
+
 const options = {
   autoIndex: true, //this is the code I added that solved it all
 };

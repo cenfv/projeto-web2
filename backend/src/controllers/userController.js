@@ -16,7 +16,7 @@ const handleErrors = (err) => {
 
 exports.createUser = async (firstName, lastName, email, password, gender) => {
   try {
-    let passwordHash;
+    let passwordHash = "";
     if (password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       passwordHash = await bcrypt.hash(password, salt);
@@ -36,28 +36,25 @@ exports.createUser = async (firstName, lastName, email, password, gender) => {
     throw errors;
   }
 };
-exports.updateUser = async (
-  id,
-  firstName,
-  lastName,
-  email,
-  password,
-  gender
-) => {
-  console.log("entrou update");
-  const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash(password, salt);
-
-  const user = await User.findById(id);
-  console.log(user);
-  const res = await user.updateOne({
-    firstName,
-    lastName,
-    email,
-    password,
-    gender,
-  });
-  return res;
+exports.updateUser = async (id, firstName, lastName, password, gender) => {
+  try {
+    let passwordHash = "";
+    if (password.length >= 6) {
+      const salt = await bcrypt.genSalt(10);
+      passwordHash = await bcrypt.hash(password, salt);
+    }
+    const user = await User.findById(id);
+    const res = await user.updateOne({
+      firstName,
+      lastName,
+      password: passwordHash,
+      gender,
+    });
+    return res;
+  } catch (err) {
+    const errors = handleErrors(err);
+    throw errors;
+  }
 };
 exports.userAuth = async (email, password) => {
   const user = await User.findOne({ email: email });

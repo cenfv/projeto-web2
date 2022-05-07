@@ -55,13 +55,12 @@ router.put("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
       password,
       gender
     );
-    res.status(200).json({
+    res.status(201).json({
       user,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      msg: "User not found",
+    res.status(400).json({
+      validationError: err,
     });
   }
 });
