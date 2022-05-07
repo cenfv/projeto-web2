@@ -7,12 +7,12 @@ router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const targetId = req.params.id;
   try {
     const user = await userController.getUserById(targetId);
-    res.status(200).json({
+    return res.status(200).json({
       user,
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({
+    return res.status(500).json({
       msg: "User not found",
     });
   }
@@ -28,11 +28,11 @@ router.post("/", async (req, res, next) => {
       password,
       gender
     );
-    res.status(201).json({
+    return res.status(201).json({
       user,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       validationError: err,
     });
   }
@@ -41,25 +41,24 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const targetId = req.params.id;
   if (targetId != req.id) {
-    res.status(404).json({
+    return res.status(404).json({
       msg: "User not authenticated",
     });
   }
   try {
-    const { firstName, lastName, email, password, gender } = req.body;
+    const { firstName, lastName, password, gender } = req.body;
     const user = await userController.updateUser(
       req.id,
       firstName,
       lastName,
-      email,
       password,
       gender
     );
-    res.status(201).json({
+    return res.status(201).json({
       user,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       validationError: err,
     });
   }

@@ -7,12 +7,12 @@ const checkToken = require("../middlewares/checkToken");
 router.get("/", checkToken.checkTokenBearer, async function (req, res, next) {
   try {
     const user = await userController.getUserById(req.id);
-    res.status(200).json({
+    return res.status(200).json({
       user,
     });
   } catch (err) {
     console.log(err);
-    res.status(404).json({
+    return res.status(404).json({
       msg: "Invalid token",
     });
   }
@@ -34,14 +34,14 @@ router.post("/", async (req, res, next) => {
         expiresIn: "1 hr",
       }
     );
-    res.status(200).json({
+    return res.status(200).json({
       msg: "user authenticated successfully",
       token: token,
       user: user,
     });
   } catch (err) {
     console.log(err);
-    res.status(404).json({
+    return res.status(404).json({
       msg: "User not authenticated",
     });
   }
