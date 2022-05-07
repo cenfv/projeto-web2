@@ -18,7 +18,7 @@ router.get("/", checkToken.checkTokenBearer, async function (req, res, next) {
   }
 });
 
-router.post("/", async function (req, res, next) {
+router.post("/", async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
