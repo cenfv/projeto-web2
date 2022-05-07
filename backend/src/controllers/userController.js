@@ -36,7 +36,14 @@ exports.createUser = async (firstName, lastName, email, password, gender) => {
     throw errors;
   }
 };
-exports.updateUser = async (id, firstName, lastName, password, gender) => {
+exports.updateUser = async (
+  id,
+  firstName,
+  lastName,
+  email,
+  password,
+  gender
+) => {
   try {
     let passwordHash = "";
     if (password.length >= 6) {
