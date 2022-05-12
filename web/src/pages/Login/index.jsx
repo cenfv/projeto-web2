@@ -3,12 +3,71 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { changeUser } from "../../redux/userSlice";
+import * as yup from "yup";
 
 export function Login() {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
   let navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [status, setStatus] = useState({
+    type: "",
+    message: "",
+  });
+
+  const addUser = async (e) => {
+     
+    const res = await validate();
+    if(!res){
+      return;
+    }   
+
+    const saveDataForm = true;
+
+    if (saveDataForm) {
+      setStatus({
+        type: "success",
+        message: "Usuário cadastrado com sucesso!",
+      });
+      setUser({
+        email: "",
+        password: "",
+      });
+    } else {
+      setStatus({
+        type: "error",
+        message: "Houve um erro ao efetuar o login!",
+      });
+    }
+  };
+
+  async function validate() {
+    let schema = yup.object().shape({
+      password: yup
+        .string("Por favor insira uma senha!")
+        .required("Por favor insira uma senha!"),
+      email: yup
+        .string("Por favor insira um email!")
+        .required("Por favor insira um email!")
+        .email("Por favor insira um email válido!"),
+    });
+
+    try {
+      await schema.validate(user);
+      return true;
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: err.errors,
+      });
+      return false;
+    }
+  }
+
   return (
     <div className="bg-indigo-500">
       <div className="flex max-w-6xl m-auto justify-center ">
@@ -22,28 +81,32 @@ export function Login() {
             <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
               Entrar com sua conta
             </h2>
-            <div className="mt-4">
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email"
-                onChange={(event) => setEmail(event.target.value)}
-              />
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Senha"
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
+            <form onSubmit={addUser}>
+              <div className="mt-4">
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className="appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Email"
+                  onChange={(event) =>
+                    setUser({ ...user, email: event.target.value })
+                  }
+                />
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Senha"
+                  onChange={(event) =>
+                    setUser({ ...user, password: event.target.value })
+                  }
+                />
+              </div>
+            </form>
             <div className="flex my-5 justify-between">
               <div className="flex items-center">
                 <input
@@ -71,9 +134,10 @@ export function Login() {
             </div>
             <button
               onClick={() => {
+                addUser()
                 Axios.post("https://projeto-web2-nodejs.herokuapp.com/auth", {
-                  email: email,
-                  password: password,
+                  email: user.email,
+                  password: user.password,
                 }).then((response) => {
                   if (response.status === 200 || response.statusText === "OK") {
                     console.log(response.data.user.firstName);
@@ -102,6 +166,21 @@ export function Login() {
               >
                 Registre-se
               </Link>
+
+              {status.type === "success" ? (
+                <p className="text-center mt-4 text-green-500">
+                  {status.message}
+                </p>
+              ) : (
+                ""
+              )}
+              {status.type === "error" ? (
+                <p className="text-center mt-4 text-red-600">
+                  {status.message}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

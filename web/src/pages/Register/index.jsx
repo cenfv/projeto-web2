@@ -23,7 +23,7 @@ export function Register() {
   const addUser = async (e) => {
     e.preventDefault();
 
-    if(!(await validate())) return
+    if (!(await validate())) return;
 
     const saveDataForm = true;
 
@@ -47,34 +47,40 @@ export function Register() {
     }
   };
 
-  async function validate(){
+  async function validate() {
     let schema = yup.object().shape({
-      gender: yup.string("Por favor selecione o seu gênero!")
+      gender: yup
+        .string("Por favor selecione o seu gênero!")
         .required("Por favor selecione o seu gênero!"),
-      confirmPassword: yup.string("Por favor insira uma confirmação da senha!")
-        .required("Por favor insira uma confirmação da senha!")     
-        .oneOf([yup.ref('password')], 'As senhas não conferem.'),
-      password: yup.string("Por favor insira uma senha!")
+      confirmPassword: yup
+        .string("Por favor insira uma confirmação da senha!")
+        .required("Por favor insira uma confirmação da senha!")
+        .oneOf([yup.ref("password")], "As senhas não conferem."),
+      password: yup
+        .string("Por favor insira uma senha!")
         .required("Por favor insira uma senha!")
         .min(6, "A senha deve possuir um mínimo de 6 caracteres."),
-      email: yup.string("Por favor insira um email!")
+      email: yup
+        .string("Por favor insira um email!")
         .required("Por favor insira um email!")
         .email("Por favor insira um email válido!"),
-      lastName: yup.string("Por favor insira o seu último nome!")
+      lastName: yup
+        .string("Por favor insira o seu último nome!")
         .required("Por favor insira o seu último nome!"),
-      firstName: yup.string("Por favor insira um nome!")
-        .required("Por favor insira um nome!")
-    })
+      firstName: yup
+        .string("Por favor insira um nome!")
+        .required("Por favor insira um nome!"),
+    });
 
     try {
-      await schema.validate(user)
-      return true
+      await schema.validate(user);
+      return true;
     } catch (err) {
       setStatus({
-        type: 'error',
-        message: err.errors
-      })
-      return false
+        type: "error",
+        message: err.errors,
+      });
+      return false;
     }
   }
 
@@ -97,51 +103,61 @@ export function Register() {
                 <input
                   id="primeiro-nome"
                   name="firstName"
-                  type="text"            
+                  type="text"
                   autoComplete="given-name"
                   className="mr-1 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Primeiro nome"
-                  onChange={(event) => setUser({ ...user, "firstName": event.target.value })}
+                  onChange={(event) =>
+                    setUser({ ...user, firstName: event.target.value })
+                  }
                 />
                 <input
                   id="sobrenome"
                   name="lastName"
-                  type="text"          
+                  type="text"
                   autoComplete="family-name"
                   className="appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Último nome"
-                  onChange={(event) => setUser({ ...user, "lastName": event.target.value })}
+                  onChange={(event) =>
+                    setUser({ ...user, lastName: event.target.value })
+                  }
                 />
               </div>
 
               <input
                 id="email-address"
                 name="email"
-                type="email"             
+                type="email"
                 autoComplete="email"
                 className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email"
-                onChange={(event) => setUser({ ...user, "email": event.target.value })}
+                onChange={(event) =>
+                  setUser({ ...user, email: event.target.value })
+                }
               />
 
               <input
                 id="password"
                 name="password"
-                type="password"                
+                type="password"
                 autoComplete="current-password"
                 className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Senha"
-                onChange={(event) => setUser({ ...user, "password": event.target.value })}
+                onChange={(event) =>
+                  setUser({ ...user, password: event.target.value })
+                }
               />
 
               <input
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password" 
+                type="password"
                 autoComplete="current-password"
                 className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Confirmar senha"
-                onChange={(event) => setUser({ ...user, "confirmPassword": event.target.value })}
+                onChange={(event) =>
+                  setUser({ ...user, confirmPassword: event.target.value })
+                }
               />
 
               <label className="font-medium text-black-500 mt-3">Gênero</label>
@@ -152,7 +168,7 @@ export function Register() {
                     id="masculino"
                     name="masculino"
                     value="Masculino"
-                    onChange={() => setUser({ ...user, "gender": "masculino"})}
+                    onChange={() => setUser({ ...user, gender: "masculino" })}
                     checked={user.gender === "masculino"}
                   />
                   <label className="ml-1 text-base" htmlFor="masculino">
@@ -166,7 +182,7 @@ export function Register() {
                     id="feminino"
                     name="feminino"
                     value="Feminino"
-                    onChange={() => setUser({ ...user, "gender": "feminino"})}
+                    onChange={() => setUser({ ...user, gender: "feminino" })}
                     checked={user.gender === "feminino"}
                   />
                   <label className="ml-1 text-base" htmlFor="feminino">
@@ -181,7 +197,7 @@ export function Register() {
                     name="outro"
                     value="Outro"
                     checked={user.gender === "outro"}
-                    onChange={() => setUser({ ...user, "gender": "outro"})}
+                    onChange={() => setUser({ ...user, gender: "outro" })}
                   />
                   <label className="ml-1 text-base" htmlFor="outro">
                     Outro
