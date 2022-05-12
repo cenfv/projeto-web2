@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectUser, logout } from "../../redux/userSlice";
 
-export function DashboardNavBar({ text }) {
+export function DashboardNavBar() {
   const { name, isLogged } = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +38,12 @@ export function DashboardNavBar({ text }) {
               className="text-base font-medium text-gray-500 hover:text-indigo-600"
             >
               Sair
+            </Link>
+            <Link
+              to="/profile"
+              className="text-base font-medium text-gray-500 hover:text-indigo-600"
+            >
+              Editar perfil
             </Link>
           </div>
         </div>

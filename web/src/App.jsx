@@ -11,6 +11,7 @@ import {
   ProtectedRoutes,
   LoggedUserRedirect,
 } from "./components/ProtectedRoutes";
+import { UserProfile } from "./pages/UserProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>
