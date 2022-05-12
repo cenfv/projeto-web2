@@ -12,7 +12,7 @@ router.get("/", checkToken.checkTokenBearer, async function (req, res, next) {
     });
   } catch (err) {
     console.log(err);
-    return res.status(404).json({
+    return res.status(400).json({
       msg: "Invalid token",
     });
   }

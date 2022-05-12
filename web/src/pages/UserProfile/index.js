@@ -66,6 +66,7 @@ export function UserProfile() {
                 Confirme sua senha
               </label>
               <input
+                disabled
                 type="password"
                 name="confirm_password"
                 id="confirm_password"
