@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectUser, logout } from "../../redux/userSlice";
 
-export function DashboardNavBar() {
+export function DashboardNavBar({ text }) {
   const { name, isLogged } = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export function DashboardNavBar() {
               alt="logo"
             />
             <Link
-              to="/"
+              to="/dashboard"
               className="font-medium text-gray-500 hover:text-indigo-600"
             >
               Home

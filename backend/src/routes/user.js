@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const checkToken = require("../middlewares/checkToken");
+const checkToken = require("../helpers/checkToken");
 
 router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const targetId = req.params.id;

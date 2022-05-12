@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const jwt = require("jsonwebtoken");
-const checkToken = require("../middlewares/checkToken");
+const checkToken = require("../helpers/checkToken");
 
 router.get("/", checkToken.checkTokenBearer, async function (req, res, next) {
   try {
