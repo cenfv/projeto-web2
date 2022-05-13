@@ -2,10 +2,10 @@ import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { Footer } from "../../components/Footer";
 export function UserProfile() {
   return (
-    <div className="overflow-hidden h-screen">
+    <div className="overflow-hidden h-screen bg-gray-50">
       <DashboardNavBar />
-      <div className="bg-gray-50 h-full">
-        <div className="flex bg-gray-100 max-w-6xl mx-auto p-5 flex-wrap sm:flex-nowrap">
+      <div className=" h-full">
+        <div className="flex mt-24 bg-gray-100 max-w-6xl mx-auto p-5 flex-wrap sm:flex-nowrap">
           <div className="sm:px-0 p-5">
             <h3 className="text-lg font-medium leading-6 text-gray-900">
               Informações pessoais

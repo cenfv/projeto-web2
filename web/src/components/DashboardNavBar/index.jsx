@@ -9,9 +9,9 @@ import { Fragment } from "react";
 export function DashboardNavBar({ text }) {
   const { name, isLogged } = useSelector(selectUser);
   const dispatch = useDispatch();
-  
+
   return (
-    <div className="border-b-2 border-gray-100">
+    <div className="border-b-2 bg-white  border-gray-100">
       <div className=" py-7 items-center justify-center max-w-6xl mx-auto ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-10">
@@ -68,7 +68,7 @@ export function DashboardNavBar({ text }) {
                         <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-1">
                           <Link
                             to="/profile"
-                            className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                            className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-50"
                           >
                             <div className="flex h-6 w-6 shrink-0 items-center justify-center text-gray-500 sm:h-6 sm:w-6">
                               <CogIcon aria-hidden="true" />
