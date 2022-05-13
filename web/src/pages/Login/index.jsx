@@ -19,29 +19,55 @@ export function Login() {
     message: "",
   });
 
-  const addUser = async (e) => {
-     
-    const res = await validate();
-    if(!res){
-      return;
-    }   
+  const handleLogin = async () => {
+    return Axios.post("https://projeto-web2-nodejs.herokuapp.com/auth", {
+      email: user.email,
+      password: user.password,
+    }).then((response) => {
+      if (response.status === 200 && response.statusText === "OK") {
+        dispatch(changeUser(response.data.user.firstName));
+        localStorage.setItem("authorization", `Bearer ${response.data.token}`);
+        return true;
+      }
+    });
+  };
 
-    const saveDataForm = true;
+  const validateUser = async (e) => {
+    e.preventDefault();
 
+    if (!(await validate())) return;
+    let saveDataForm;
+    try {
+      saveDataForm = await handleLogin();
+    } catch (err) {
+      if (
+        err.response.status === 404 &&
+        err.response.statusText === "Not Found"
+      ) {
+        setStatus({
+          type: "error",
+          message: "Usuário ou senha incorretos",
+        });
+      } else {
+        setStatus({
+          type: "error",
+          message: "Houve um erro ao realizar o login!",
+        });
+      }
+    }
+    if (!saveDataForm) return;
     if (saveDataForm) {
       setStatus({
         type: "success",
-        message: "Usuário cadastrado com sucesso!",
+        message: "Usuário logado com sucesso!",
       });
       setUser({
         email: "",
         password: "",
       });
-    } else {
-      setStatus({
-        type: "error",
-        message: "Houve um erro ao efetuar o login!",
-      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     }
   };
 
@@ -81,7 +107,7 @@ export function Login() {
             <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
               Entrar com sua conta
             </h2>
-            <form onSubmit={addUser}>
+            <form onSubmit={validateUser}>
               <div className="mt-4">
                 <input
                   id="email-address"
@@ -106,56 +132,39 @@ export function Login() {
                   }
                 />
               </div>
-            </form>
-            <div className="flex my-5 justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Lembrar-me
-                </label>
-              </div>
 
-              <div className="text-sm">
-                <Link
-                  to="/recover"
-                  className="font-medium text-indigo-600 hover:underline"
-                >
-                  Esqueceu sua senha?
-                </Link>
+              <div className="flex my-5 justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
+                    Lembrar-me
+                  </label>
+                </div>
+
+                <div className="text-sm">
+                  <Link
+                    to="/recover"
+                    className="font-medium text-indigo-600 hover:underline"
+                  >
+                    Esqueceu sua senha?
+                  </Link>
+                </div>
               </div>
-            </div>
-            <button
-              onClick={() => {
-                addUser()
-                Axios.post("https://projeto-web2-nodejs.herokuapp.com/auth", {
-                  email: user.email,
-                  password: user.password,
-                }).then((response) => {
-                  if (response.status === 200 || response.statusText === "OK") {
-                    console.log(response.data.user.firstName);
-                    dispatch(changeUser(response.data.user.firstName));
-                    localStorage.setItem(
-                      "authorization",
-                      `Bearer ${response.data.token}`
-                    );
-                    console.log(localStorage.getItem("authorization"));
-                    navigate("/dashboard");
-                  }
-                });
-              }}
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Entrar
-            </button>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Entrar
+              </button>
+            </form>
             <div className="flex text-sm mt-4">
               <span className="font-medium text-gray-500">
                 Precisando de uma conta?
@@ -166,22 +175,19 @@ export function Login() {
               >
                 Registre-se
               </Link>
-
-              {status.type === "success" ? (
-                <p className="text-center mt-4 text-green-500">
-                  {status.message}
-                </p>
-              ) : (
-                ""
-              )}
-              {status.type === "error" ? (
-                <p className="text-center mt-4 text-red-600">
-                  {status.message}
-                </p>
-              ) : (
-                ""
-              )}
             </div>
+            {status.type === "success" ? (
+              <p className="text-center mt-4 text-green-500">
+                {status.message}
+              </p>
+            ) : (
+              ""
+            )}
+            {status.type === "error" ? (
+              <p className="text-center mt-4 text-red-600">{status.message}</p>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
