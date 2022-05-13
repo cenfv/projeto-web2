@@ -23,7 +23,6 @@ router.post("/", async (req, res, next) => {
 
   try {
     const user = await userController.userAuth(email, password);
-    console.log(user);
     const secret = process.env.SECRET;
     const token = jwt.sign(
       {

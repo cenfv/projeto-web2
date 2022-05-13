@@ -46,7 +46,8 @@ router.put("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
     });
   }
   try {
-    const { firstName, lastName, password, gender } = req.body;
+    const password = req.body.password;
+    const { firstName, lastName, gender } = req.body;
     const user = await userController.updateUser(
       req.id,
       firstName,

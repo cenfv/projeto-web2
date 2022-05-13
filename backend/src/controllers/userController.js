@@ -39,18 +39,27 @@ exports.createUser = async (firstName, lastName, email, password, gender) => {
 exports.updateUser = async (id, firstName, lastName, password, gender) => {
   try {
     let passwordHash = "";
-    if (password.length >= 6) {
+    if (password && password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       passwordHash = await bcrypt.hash(password, salt);
     }
     const user = await User.findById(id);
-    const res = await user.updateOne({
-      firstName,
-      lastName,
-      password: passwordHash,
-      gender,
-    });
-    return res;
+    if (!password) {
+      const res = await user.updateOne({
+        firstName,
+        lastName,
+        gender,
+      });
+      return res;
+    } else {
+      const res = await user.updateOne({
+        firstName,
+        lastName,
+        password: passwordHash,
+        gender,
+      });
+      return res;
+    }
   } catch (err) {
     const errors = handleErrors(err);
     throw errors;
