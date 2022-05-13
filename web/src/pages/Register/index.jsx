@@ -20,13 +20,44 @@ export function Register() {
     message: "",
   });
 
+  const handleRegister = async () => {
+    return Axios.post("https://projeto-web2-nodejs.herokuapp.com/user", {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      gender: user.gender,
+    }).then((response) => {
+      if (response.status === 201 && response.statusText === "Created") {
+        return true;
+      }
+    });
+  };
+
   const addUser = async (e) => {
     e.preventDefault();
 
     if (!(await validate())) return;
-
-    const saveDataForm = true;
-
+    let saveDataForm;
+    try {
+      saveDataForm = await handleRegister();
+    } catch (err) {
+      if (
+        err.response.status === 400 &&
+        err.response.statusText === "Bad Request"
+      ) {
+        setStatus({
+          type: "error",
+          message: "O email fornecido já existe",
+        });
+      } else {
+        setStatus({
+          type: "error",
+          message: "Houve um erro ao realizar o cadastro!",
+        });
+      }
+    }
+    if (!saveDataForm) return;
     if (saveDataForm) {
       setStatus({
         type: "success",
@@ -39,11 +70,9 @@ export function Register() {
         password: "",
         gender: "",
       });
-    } else {
-      setStatus({
-        type: "error",
-        message: "Houve um erro ao realizar o cadastro!",
-      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     }
   };
 
@@ -206,23 +235,6 @@ export function Register() {
               </div>
 
               <button
-                onClick={() => {
-                  Axios.post("https://projeto-web2-nodejs.herokuapp.com/user", {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    password: user.password,
-                    gender: user.gender,
-                  }).then((response) => {
-                    if (
-                      response.status === 201 ||
-                      response.statusText === "OK"
-                    ) {
-                      console.log("Usuário cadastrado com sucesso");
-                      navigate("/login");
-                    }
-                  });
-                }}
                 type="submit"
                 className="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
