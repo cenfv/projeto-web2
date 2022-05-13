@@ -54,7 +54,7 @@ router.put("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
       password,
       gender
     );
-    return res.status(201).json({
+    return res.status(200).json({
       user,
     });
   } catch (err) {
