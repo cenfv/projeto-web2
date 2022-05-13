@@ -31,7 +31,7 @@ export function Login() {
     if (saveDataForm) {
       setStatus({
         type: "success",
-        message: "Usuário cadastrado com sucesso!",
+        message: "Login realizado com sucesso!",
       });
       setUser({
         email: "",
@@ -165,9 +165,10 @@ export function Login() {
                 className="ml-1 font-bold text-indigo-600 hover:underline"
               >
                 Registre-se
-              </Link>
+              </Link>           
+            </div>
 
-              {status.type === "success" ? (
+            {status.type === "success" ? (
                 <p className="text-center mt-4 text-green-500">
                   {status.message}
                 </p>
@@ -181,7 +182,6 @@ export function Login() {
               ) : (
                 ""
               )}
-            </div>
           </div>
         </div>
       </div>
