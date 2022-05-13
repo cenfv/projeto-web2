@@ -1,30 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { selectUser, logout } from "../../redux/userSlice";
 import { Popover, Transition } from "@headlessui/react";
 import { CogIcon, LogoutIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
 
-const solutions = [
-  {
-    name: "Perfil",
-    description: "Visualizar ou Editar perfil",
-    href: "/profile",
-    icon: CogIcon,
-  },
-  {
-    name: "Sair",
-    description: "Sair da sua conta",
-    href: "##",
-    icon: LogoutIcon,
-  },
-];
-
 export function DashboardNavBar({ text }) {
   const { name, isLogged } = useSelector(selectUser);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   return (
     <div className="border-b-2 border-gray-100">
       <div className=" py-7 items-center justify-center max-w-6xl mx-auto ">
