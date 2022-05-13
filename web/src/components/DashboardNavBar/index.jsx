@@ -12,14 +12,16 @@ export function DashboardNavBar({ text }) {
 
   return (
     <div className="border-b-2 bg-white  border-gray-100">
-      <div className=" py-7 items-center justify-center max-w-6xl mx-auto ">
+      <div className=" py-5 items-center justify-center max-w-6xl mx-auto ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-10">
-            <img
-              className="h-8 w-auto sm:h-10"
-              src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
-              alt="logo"
-            />
+            <Link to="/">
+              <img
+                className="h-8 w-auto sm:h-10"
+                src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
+                alt="logo"
+              />
+            </Link>
             <Link
               to="/dashboard"
               className="font-medium text-gray-500 hover:text-indigo-600"
@@ -77,7 +79,9 @@ export function DashboardNavBar({ text }) {
                               <p className="text-sm font-medium text-gray-900">
                                 Perfil
                               </p>
-                              <p className="text-sm text-gray-500">Visualizar ou editar perfil</p>
+                              <p className="text-sm text-gray-500">
+                                Visualizar ou editar perfil
+                              </p>
                             </div>
                           </Link>
                           <Link
@@ -95,7 +99,9 @@ export function DashboardNavBar({ text }) {
                               <p className="text-sm font-medium text-gray-900">
                                 Sair
                               </p>
-                              <p className="text-sm text-gray-500">Sair da sua conta</p>
+                              <p className="text-sm text-gray-500">
+                                Sair da sua conta
+                              </p>
                             </div>
                           </Link>
                         </div>

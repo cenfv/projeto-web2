@@ -2,6 +2,7 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { Footer } from "../../components/Footer";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 export function UserProfile() {
   const [user, setUser] = useState({
     id: "",
@@ -12,13 +13,15 @@ export function UserProfile() {
     confirmPassword: "",
     gender: "",
   });
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    Axios.get("https://projeto-web2-nodejs.herokuapp.com/auth", {
+    setLoading(true);
+    Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
       headers: {
         authorization: localStorage.getItem("authorization"),
       },
     }).then((response) => {
-      console.log(response.data);
+      setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setUser({
           id: response.data.user._id,
@@ -35,6 +38,11 @@ export function UserProfile() {
       <DashboardNavBar />
       <div>
         <div className="mt-8 flex rounded-lg bg-gray-100 max-w-6xl mx-auto p-5 flex-wrap sm:flex-nowrap">
+          {loading && (
+            <div className="absolute left-1/2 top-1/3">
+              <AiOutlineLoading3Quarters className="w-12 h-12 animate-spin fill-indigo-800" />
+            </div>
+          )}
           <div className="sm:px-0 p-6">
             <h3 className="text-lg font-medium leading-6 text-gray-900">
               Informações pessoais
@@ -43,7 +51,11 @@ export function UserProfile() {
               Mantenha suas informações sempre atualizadas.
             </p>
           </div>
-          <div className=" bg-white rounded-md m-2 sm:m-6 sm:ml-10 justify-between w-full p-5">
+          <div
+            className={`${
+              loading && "opacity-50"
+            }  bg-white rounded-md m-2 sm:m-6 sm:ml-10 justify-between w-full p-5 `}
+          >
             <div className="flex flex-wrap sm:flex-nowrap">
               <div className=" w-full">
                 <label className="text-sm font-medium text-gray-700">
@@ -172,7 +184,7 @@ export function UserProfile() {
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   onClick={() => {
                     Axios.put(
-                      `https://projeto-web2-nodejs.herokuapp.com/user/${user.id}`,
+                      `${process.env.REACT_APP_API_URL}/user/${user.id}`,
                       {
                         firstName: user.firstName,
                         lastName: user.lastName,

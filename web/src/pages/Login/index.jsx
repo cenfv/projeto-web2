@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { changeUser } from "../../redux/userSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import * as yup from "yup";
 
 export function Login() {
@@ -19,11 +20,14 @@ export function Login() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
-    return Axios.post("https://projeto-web2-nodejs.herokuapp.com/auth", {
+    setLoading(true);
+    return Axios.post(`${process.env.REACT_APP_API_URL}/auth`, {
       email: user.email,
       password: user.password,
     }).then((response) => {
+      setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         dispatch(changeUser(response.data.user.firstName));
         localStorage.setItem("authorization", `Bearer ${response.data.token}`);
@@ -40,6 +44,7 @@ export function Login() {
     try {
       saveDataForm = await handleLogin();
     } catch (err) {
+      setLoading(false);
       if (
         err.response.status === 404 &&
         err.response.statusText === "Not Found"
@@ -187,6 +192,11 @@ export function Login() {
               <p className="text-center mt-4 text-red-600">{status.message}</p>
             ) : (
               ""
+            )}
+            {loading && (
+              <div className="flex mt-5 justify-center">
+                <AiOutlineLoading3Quarters className="w-12 h-12 animate-spin fill-indigo-500" />
+              </div>
             )}
           </div>
         </div>

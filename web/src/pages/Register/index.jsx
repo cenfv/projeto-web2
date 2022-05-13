@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import * as yup from "yup";
 
 export function Register() {
@@ -20,14 +21,18 @@ export function Register() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleRegister = async () => {
-    return Axios.post("https://projeto-web2-nodejs.herokuapp.com/user", {
+    setLoading(true);
+    return Axios.post(`${process.env.REACT_APP_API_URL}/user`, {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       password: user.password,
       gender: user.gender,
     }).then((response) => {
+      setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
         return true;
       }
@@ -42,6 +47,7 @@ export function Register() {
     try {
       saveDataForm = await handleRegister();
     } catch (err) {
+      setLoading(false);
       if (
         err.response.status === 400 &&
         err.response.statusText === "Bad Request"
@@ -265,6 +271,11 @@ export function Register() {
               <p className="text-center mt-4 text-red-600">{status.message}</p>
             ) : (
               ""
+            )}
+            {loading && (
+              <div className="flex mt-5 justify-center">
+                <AiOutlineLoading3Quarters className="w-12 h-12 animate-spin fill-indigo-500" />
+              </div>
             )}
           </div>
         </div>
