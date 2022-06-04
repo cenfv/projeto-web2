@@ -12,6 +12,7 @@ var questionRouter = require("./src/routes/question");
 var quizRouter = require("./src/routes/quiz");
 var alternativeRouter = require("./src/routes/alternative");
 var questionAlternativeRouter = require("./src/routes/questionAlternative");
+var submissionRouter = require("./src/routes/submission");
 
 var app = express();
 var mongodbConnection = require("./src/database/mongodb/mongodb-connection");
@@ -37,6 +38,7 @@ app.use("/question", questionRouter);
 app.use("/quiz", quizRouter);
 app.use("/alternative", alternativeRouter);
 app.use("/question-alternative", questionAlternativeRouter);
+app.use("/submission", submissionRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
