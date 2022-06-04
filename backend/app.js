@@ -8,6 +8,10 @@ var logger = require("morgan");
 var indexRouter = require("./src/routes/index");
 var userRouter = require("./src/routes/user");
 var authRouter = require("./src/routes/auth");
+var questionRouter = require("./src/routes/question");
+var quizRouter = require("./src/routes/quiz");
+var alternativeRouter = require("./src/routes/alternative");
+var questionAlternativeRouter = require("./src/routes/questionAlternative");
 
 var app = express();
 var mongodbConnection = require("./src/database/mongodb/mongodb-connection");
@@ -29,6 +33,10 @@ mongodbConnection();
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/question", questionRouter);
+app.use("/quiz", quizRouter);
+app.use("/alternative", alternativeRouter);
+app.use("/question-alternative", questionAlternativeRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
