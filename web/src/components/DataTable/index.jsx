@@ -50,19 +50,19 @@ export function DataTable() {
         <table className="min-w-full table-auto divide-gray-200">
           <thead className="bg-indigo-500  ">
             <tr>
-              <th className="py-3 px-6 text-sm font-medium tracking-wider center text-white uppercase ">
+              <th className="py-2 px-6 text-sm font-medium tracking-wider center text-white uppercase ">
                 #
               </th>
-              <th className="py-3 px-6 text-sm font-medium tracking-wider center text-white uppercase">
+              <th className="py-2 px-6 text-sm font-medium tracking-wider center text-white uppercase">
                 QUESTÃO
               </th>
-              <th className="py-3 px-6 text-sm font-medium tracking-wider center text-white uppercase">
+              <th className="py-2 px-6 text-sm font-medium tracking-wider center text-white uppercase">
                 RESOLVIDO EM
               </th>
-              <th className="py-3 px-6 text-sm font-medium tracking-wider center text-white uppercase">
+              <th className="py-2 px-6 text-sm font-medium tracking-wider center text-white uppercase">
                 ANO
               </th>
-              <th className="py-3 px-6 text-sm font-medium tracking-wider center text-white uppercase">
+              <th className="py-2 px-6 text-sm font-medium tracking-wider center text-white uppercase">
                 DIFICULDADE
               </th>
             </tr>
