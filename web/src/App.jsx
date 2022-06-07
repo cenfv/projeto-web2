@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import { Recover } from "./pages/Recover";
 import { About } from "./pages/About";
 import { Dashboard } from "./pages/Dashboard";
+import { AddContent } from "./pages/AddContent";
 import {
   ProtectedRoutes,
   LoggedUserRedirect,
@@ -27,6 +28,7 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/add-content" element={<AddContent />} />
         </Route>
       </Routes>
     </BrowserRouter>
