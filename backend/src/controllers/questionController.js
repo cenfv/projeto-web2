@@ -28,3 +28,13 @@ exports.createQuestion = async (description, editionYear, difficulty) => {
     throw errors;
   }
 };
+
+exports.createImage = async (id, imageUrl) => {
+  try {
+    const res = await Question.updateOne({ _id: id }, { imageUrl });
+    return res;
+  } catch (err) {
+    const errors = handleErrors(err);
+    throw errors;
+  }
+};

@@ -11,6 +11,9 @@ const questionSchema = new mongoose.Schema({
   difficulty: {
     type: Number,
   },
+  imageUrl: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Question", questionSchema);

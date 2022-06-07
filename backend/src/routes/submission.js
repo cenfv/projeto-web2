@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const submissionController = require("../controllers/submissionController");
@@ -11,7 +10,7 @@ router.get("/", async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return res.status(404).json({
       msg: "Submission not found",
     });
   }
@@ -28,7 +27,7 @@ router.get("/:id", async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return res.status(404).json({
       msg: "Submission not found",
     });
   }
@@ -36,9 +35,8 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   const { user, questionAlternative, choice } = req.body;
-
   try {
-    const submission = await submissionController.createsubmission(
+    const submission = await submissionController.createSubmission(
       user,
       questionAlternative,
       choice
