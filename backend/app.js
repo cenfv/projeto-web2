@@ -16,8 +16,6 @@ var submissionRouter = require("./src/routes/submission");
 
 var app = express();
 var mongodbConnection = require("./src/database/mongodb/mongodb-connection");
-//var mongodbConnection = require('./modules/mongodb/mongodb-connection');
-// view engine setup
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -28,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
-
+app.use("/files", express.static(path.resolve(__dirname, "uploads", "images")));
 mongodbConnection();
 
 app.use("/", indexRouter);

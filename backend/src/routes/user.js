@@ -12,7 +12,7 @@ router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return res.status(404).json({
       msg: "User not found",
     });
   }

@@ -18,23 +18,28 @@ exports.getSubmissionById = async (id) => {
 exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
   try {
     const user = await User.findById(userId);
-    const questionAlternative = await QuestionAlternative.findById(questionAlternativeId);
+    const questionAlternative = await QuestionAlternative.findById(
+      questionAlternativeId
+    );
     const choice = await Alternative.findById(choiceId);
-    const {correctAlternative} = questionAlternative;
-    let submission;
+    const alternativaCorreta = await Alternative.findById(
+      questionAlternative.correctAlternative.toString()
+    );
 
-    if(correctAlternative.find(choice) === true){
-        submission = new Submission({
-            user,
-            questionAlternative,
-            correctChoice : true,
-        });
-    }else{
-        submission = new Submission({
-            user,   
-            questionAlternative,
-            correctChoice : false,
-        });
+    if (JSON.stringify(choice) === JSON.stringify(alternativaCorreta)) {
+      console.log("a");
+      submission = new Submission({
+        user,
+        questionAlternative,
+        correctChoice: true,
+      });
+    } else {
+      console.log("b");
+      submission = new Submission({
+        user,
+        questionAlternative,
+        correctChoice: false,
+      });
     }
     const res = await submission.save();
     return res;

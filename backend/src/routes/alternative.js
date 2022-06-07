@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return res.status(404).json({
       msg: "Alternative not found",
     });
   }
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return res.status(404).json({
       msg: "Alternative not found",
     });
   }
