@@ -1,6 +1,5 @@
 import { Footer } from "../../components/Footer";
 import { DashboardNavBar } from "../../components/DashboardNavBar";
-import { useState } from "react";
 import { DataTable } from "../../components/DataTable";
 
 export function Dashboard() {

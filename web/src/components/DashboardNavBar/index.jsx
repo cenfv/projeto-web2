@@ -28,6 +28,12 @@ export function DashboardNavBar({ text }) {
             >
               Dashboard
             </Link>
+            <Link
+              to="/add-content"
+              className="font-medium text-gray-500 hover:text-indigo-600"
+            >
+              Editar provas
+            </Link>
           </div>
 
           <div className="flex space-x-10 items-center">
