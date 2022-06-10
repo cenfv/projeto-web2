@@ -113,7 +113,7 @@ export function AddContent() {
           </div>
           <div className="grid grid-cols-2 gap-6">
             <Combobox value={selectedTest} onChange={setSelectedTest}>
-              <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
+              <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none z-10">
                 <Combobox.Input
                   className="border-none p-4 text-gray-900 focus:outline-none"
                   displayValue={(test) => test.name}
@@ -225,7 +225,7 @@ export function AddContent() {
                 value={selectedAlternative}
                 onChange={setSelectedAlternative}
               >
-                <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
+                <div className="z-10 mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
                   <Combobox.Input
                     className="border-none p-4 text-gray-900 focus:outline-none"
                     displayValue={(alternative) => alternative.option}
@@ -299,7 +299,7 @@ export function AddContent() {
             <div>
               <p className="mt-5">Selecione a dificuldade:</p>
               <div className="grid grid-cols-3 gap-2 mt-3">
-              <button className="bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white focus:bg-indigo-500 focus:text-white focus:ring">
+                <button className="bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white focus:bg-indigo-500 focus:text-white focus:ring">
                   Fácil
                 </button>
                 <button className="bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white focus:bg-indigo-500 focus:text-white focus:ring">
