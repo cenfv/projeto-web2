@@ -34,6 +34,8 @@ export function UserProfile() {
     });
   }, []);
   return (
+    <>
+    <div className="min-h-screen">
     <div className="flex flex-col overflow-hidden h-screen bg-gray-50">
       <DashboardNavBar />
       <div>
@@ -212,10 +214,13 @@ export function UserProfile() {
             </div>
           </div>
         </div>
-        <div className="mb-5 fixed left-0 bottom-0 w-full">
-          <Footer />
-        </div>
+        
       </div>
     </div>
+    <div className="bg-gray-50 pb-5 left-0 bottom-0 w-full">
+    <Footer />
+  </div>
+  </div>
+  </>
   );
 }

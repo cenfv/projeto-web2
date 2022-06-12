@@ -29,6 +29,12 @@ export function DashboardNavBar({ text }) {
               Dashboard
             </Link>
             <Link
+              to="/question"
+              className="font-medium text-gray-500 hover:text-indigo-600"
+            >
+              Questões
+            </Link>
+            <Link
               to="/add-content"
               className="font-medium text-gray-500 hover:text-indigo-600"
             >
