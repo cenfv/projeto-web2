@@ -4,7 +4,8 @@ import { useState } from "react";
 
 export function Question() {
   return (
-    <div>
+    <>
+    <div className="min-h-screen">
       <DashboardNavBar />
       <div className="max-w-6xl mx-auto">
         <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl">
@@ -49,9 +50,10 @@ export function Question() {
           </div>
         </div>
       </div>
-      <div className="mb-5 fixed left-0 bottom-0 w-full">
+    </div>
+    <div className="mb-5 left-0 bottom-0 w-full">
         <Footer />
       </div>
-    </div>
+    </>
   );
 }
