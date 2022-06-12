@@ -1,4 +1,5 @@
 const Question = require("../models/Question");
+const quizController = require("../models/Quiz");
 
 exports.getAllQuestions = async () => {
   const question = await Question.find();
@@ -14,12 +15,19 @@ exports.getQuestionById = async (id) => {
   }
 };
 
-exports.createQuestion = async (description, editionYear, difficulty) => {
+exports.createQuestion = async (
+  description,
+  editionYear,
+  difficulty,
+  quizId
+) => {
   try {
+    const quiz = await quizController.findById(quizId);
     const question = new Question({
       description,
       editionYear,
       difficulty,
+      quiz,
     });
     const res = await question.save();
     return res;

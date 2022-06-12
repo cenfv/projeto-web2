@@ -32,9 +32,9 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { description, questionId } = req.body;
+  const { description } = req.body;
   try {
-    const quiz = await quizController.createQuiz(description, questionId);
+    const quiz = await quizController.createQuiz(description);
     return res.status(201).json({
       quiz,
     });
@@ -47,26 +47,8 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   try {
-    const { description, question } = req.body;
-    const quiz = await quizController.updateQuiz(
-      req.params.id,
-      description,
-      question
-    );
-    return res.status(200).json({
-      quiz,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      validationError: err,
-    });
-  }
-});
-
-router.post("/:id/question", async (req, res, next) => {
-  try {
-    const { question } = req.body;
-    const quiz = await quizController.addQuestion(req.params.id, question);
+    const { description } = req.body;
+    const quiz = await quizController.updateQuiz(req.params.id, description);
     return res.status(200).json({
       quiz,
     });

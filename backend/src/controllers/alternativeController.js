@@ -14,14 +14,15 @@ exports.getAlternativeById = async (id) => {
   }
 };
 
-exports.createAlternative = async (description) => {
+exports.createAlternative = async (alternative) => {
   try {
-    const alternative = new Alternative({
-      description,
+    alternative.map((alternative) => {
+      console.log(alternative);
     });
-    const res = await alternative.save();
+    const res = Alternative.insertMany(alternative);
     return res;
   } catch (err) {
+    console.log(err);
     const errors = handleErrors(err);
     throw errors;
   }

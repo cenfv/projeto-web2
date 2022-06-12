@@ -7,6 +7,7 @@ const multer = require("multer");
 const upload = multer(uploadConfig.upload("./uploads/images"));
 
 router.patch("/:id/image", upload.single("img"), async (req, res, next) => {
+  console.log(req);
   try {
     const questionId = req.params.id;
     const question = await questionController.getQuestionById(questionId);
@@ -21,20 +22,6 @@ router.patch("/:id/image", upload.single("img"), async (req, res, next) => {
     }
     return res.status(500).json({
       msg: "An error occurred while processing the request",
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(404).json({
-      msg: "Question not found",
-    });
-  }
-});
-
-router.get("/", async (req, res, next) => {
-  try {
-    const questions = await questionController.getAllQuestions();
-    return res.status(200).json({
-      questions,
     });
   } catch (err) {
     console.log(err);
@@ -74,12 +61,13 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { description, editionYear, difficulty } = req.body;
+  const { description, editionYear, difficulty, quiz } = req.body;
   try {
     const question = await questionController.createQuestion(
       description,
       editionYear,
-      difficulty
+      difficulty,
+      quiz
     );
     return res.status(201).json({
       question,

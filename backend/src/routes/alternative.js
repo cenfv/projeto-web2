@@ -34,10 +34,10 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { description } = req.body;
+  const alternatives = req.body.alternatives;
   try {
     const alternative = await alternativeController.createAlternative(
-      description
+      alternatives
     );
     return res.status(201).json({
       alternative,

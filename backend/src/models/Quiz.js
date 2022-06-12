@@ -5,13 +5,6 @@ const quizSchema = new mongoose.Schema({
     type: String,
     required: [true, "Por favor, insira uma descrição"],
   },
-  question: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Question",
-      required: true,
-    },
-  ],
 });
 
 module.exports = mongoose.model("Quiz", quizSchema);
