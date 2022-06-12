@@ -312,7 +312,7 @@ export function AddContent() {
             </div>
 
             <div className="grid grid-cols-2 gap-6">
-              <div className="grid grid-cols-1">
+              <div className="flex flex-col">
                 {answers.map((answer) => {
                   return (
                     <input
@@ -490,7 +490,9 @@ export function AddContent() {
         </div>
       </div>
 
-      <Footer />
+      <div className="mb-5 left-0 bottom-0 w-full">
+        <Footer />
+      </div>
     </>
   );
 }
