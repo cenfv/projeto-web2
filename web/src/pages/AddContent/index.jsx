@@ -18,14 +18,15 @@ export function AddContent() {
   const [showTest, setShowTest] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
   const [quizzes, setQuizzes] = useState([{}]);
-  const [selectedTest, setSelectedTest] = useState(quizzes[0]);
+  const [selectedTest, setSelectedTest] = useState({});
   const [queryTest, setQueryTest] = useState("");
 
-  const [selectedAlternative, setSelectedAlternative] = useState(answers[0]);
+  const [selectedAlternative, setSelectedAlternative] = useState({});
   const [queryAlternative, setQueryAlternative] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [selectedImg, setSelectedImg] = useState();
   const [question, setQuestion] = useState({
+    title: "",
     description: "",
     difficulty: "",
     edditionYear: "",
@@ -63,6 +64,7 @@ export function AddContent() {
     setLoading(true);
 
     return Axios.post(`${process.env.REACT_APP_API_URL}/question`, {
+      title: question.title,
       description: question.description,
       edditionYear: question.edditionYear,
       quiz: selectedTest._id,
@@ -135,7 +137,7 @@ export function AddContent() {
     queryTest === ""
       ? quizzes
       : quizzes.filter((test) =>
-          quizzes.description
+          test.description
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(queryTest.toLowerCase().replace(/\s+/g, ""))
@@ -153,42 +155,43 @@ export function AddContent() {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gray-50">
         <DashboardNavBar />
-        <div className=" max-w-6xl mx-auto">
+        <div className=" bg-white max-w-6xl mx-auto rounded-lg p-10 my-5">
           <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl">
             Adicionar
           </h1>
           <p className="mt-5 font-medium text-lg">
             Selecione o que deseja adicionar:
           </p>
-          <div className="grid grid-cols-2 gap-4 mt-3 sm:gap-6 lg:gap-8">
-            <button
-              onClick={() => {
-                setShowQuestion(false);
-                setShowTest(!showTest);
-              }}
-              className={`bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white ${
-                showTest && "focus:bg-indigo-500 focus:text-white focus:ring"
-              }`}
-            >
-              Criar nova prova
-            </button>
-            <button
-              onClick={() => {
-                setShowTest(false);
-                setShowQuestion(!showQuestion);
-                handleLoadQuiz();
-              }}
-              className={`bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white ${
-                showQuestion &&
-                "focus:bg-indigo-500 focus:text-white focus:ring"
-              }`}
-            >
-              Criar nova questão
-            </button>
+          <div>
+            <div className="grid grid-cols-2 gap-4 mt-3 sm:gap-6 lg:gap-8">
+              <button
+                onClick={() => {
+                  setShowQuestion(false);
+                  setShowTest(!showTest);
+                }}
+                className={`bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white ${
+                  showTest && "focus:bg-indigo-500 focus:text-white focus:ring"
+                }`}
+              >
+                Criar nova prova
+              </button>
+              <button
+                onClick={() => {
+                  setShowTest(false);
+                  setShowQuestion(!showQuestion);
+                  handleLoadQuiz();
+                }}
+                className={`bg-white rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-500 hover:text-white ${
+                  showQuestion &&
+                  "focus:bg-indigo-500 focus:text-white focus:ring"
+                }`}
+              >
+                Criar nova questão
+              </button>
+            </div>
           </div>
-
           <div className={!showTest && "hidden"}>
             <h3 className="mt-5 text-2xl font-bold text-gray-900">
               Criar nova prova:
@@ -205,7 +208,7 @@ export function AddContent() {
                 onClick={() => {
                   handleCreateTest();
                 }}
-                className="flex  justify-center w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg mt-5 hover:bg-indigo-600"
+                className="flex mt-10 justify-center w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-600"
               >
                 Salvar
                 {loading && (
@@ -222,16 +225,24 @@ export function AddContent() {
             <div className="grid grid-cols-1">
               <input
                 className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 focus:outline-none focus:ring"
+                placeholder="Titulo da questão"
+                onChange={(e) =>
+                  setQuestion({ ...question, title: e.target.value })
+                }
+              ></input>
+              <textarea
                 placeholder="Enunciado da questão"
                 onChange={(e) =>
                   setQuestion({ ...question, description: e.target.value })
                 }
-              ></input>
+                className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 focus:outline-none focus:ring"
+              />
             </div>
             <div className="grid grid-cols-2 gap-6">
               <Combobox value={selectedTest} onChange={setSelectedTest}>
                 <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none z-10">
                   <Combobox.Input
+                    placeholder="Selecione uma prova"
                     className="border-none p-4 text-gray-900 focus:outline-none"
                     displayValue={(quizzes) => quizzes.description}
                     onChange={(event) => setQueryTest(event.target.value)}
@@ -244,10 +255,10 @@ export function AddContent() {
                   </Combobox.Button>
                   <Transition
                     as={Fragment}
-                    leave="transition ease-in duration-100"
+                    leave="transition ease-in duration-200"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
-                    afterLeave={() => setQueryTest("")}
+                    afterLeave={() => setQueryAlternative("")}
                   >
                     <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-base shadow-lg">
                       {filteredTest.length === 0 && queryTest !== "" ? (
@@ -374,6 +385,7 @@ export function AddContent() {
                 >
                   <div className="z-10 mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
                     <Combobox.Input
+                      placeholder="Selecione uma alternativa"
                       className="border-none p-4 text-gray-900 focus:outline-none"
                       displayValue={(answer) => answer.description}
                       onChange={(event) =>
@@ -388,7 +400,7 @@ export function AddContent() {
                     </Combobox.Button>
                     <Transition
                       as={Fragment}
-                      leave="transition ease-in duration-100"
+                      leave="transition ease-in duration-200"
                       leaveFrom="opacity-100"
                       leaveTo="opacity-0"
                       afterLeave={() => setQueryAlternative("")}
@@ -481,7 +493,7 @@ export function AddContent() {
                   await handleCreateQuestionAlternative(question, alternative);
                   await handleCreateImage(question);
                 }}
-                className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg mt-5 hover:bg-indigo-600 mb-5"
+                className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg mt-10 hover:bg-indigo-600 mb-5"
               >
                 Salvar
               </button>
@@ -490,7 +502,7 @@ export function AddContent() {
         </div>
       </div>
 
-      <div className="mb-5 left-0 bottom-0 w-full">
+      <div className="left-0 bottom-0 w-full">
         <Footer />
       </div>
     </>
