@@ -16,6 +16,7 @@ exports.getQuestionById = async (id) => {
 };
 
 exports.createQuestion = async (
+  title,
   description,
   editionYear,
   difficulty,
@@ -24,6 +25,7 @@ exports.createQuestion = async (
   try {
     const quiz = await quizController.findById(quizId);
     const question = new Question({
+      title,
       description,
       editionYear,
       difficulty,

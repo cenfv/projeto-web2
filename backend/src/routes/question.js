@@ -61,9 +61,10 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { description, editionYear, difficulty, quiz } = req.body;
+  const { title, description, editionYear, difficulty, quiz } = req.body;
   try {
     const question = await questionController.createQuestion(
+      title,
       description,
       editionYear,
       difficulty,
