@@ -249,11 +249,11 @@ export function Question() {
                   value={selectedDifficulty}
                   onChange={setSelectedDifficulty}
                 >
-                  <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
+                  <div className="z-10 mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
                     <Combobox.Input
-                      placeholder="Selecione a dificuldade"
+                      placeholder="Selecione a questão"
                       className="border-none p-4 text-gray-900 focus:outline-none"
-                      displayValue={(answer) => answer.description}
+                      displayValue={(difficulty) => difficulty.description}
                       onChange={(event) =>
                         setQueryDifficulty(event.target.value)
                       }
