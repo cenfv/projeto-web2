@@ -29,7 +29,7 @@ export function AddContent() {
     title: "",
     description: "",
     difficulty: "",
-    edditionYear: "",
+    editionYear: "",
   });
 
   const handleLoadQuiz = async () => {
@@ -66,7 +66,7 @@ export function AddContent() {
     return Axios.post(`${process.env.REACT_APP_API_URL}/question`, {
       title: question.title,
       description: question.description,
-      edditionYear: question.edditionYear,
+      editionYear: question.editionYear,
       quiz: selectedTest._id,
       difficulty: difficulty,
     }).then((response) => {
@@ -106,7 +106,7 @@ export function AddContent() {
     }).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
-        alert("cadastrado com sucesso");
+        alert("question-alternative cadastrado com sucesso");
         console.log(response);
         return true;
       }
@@ -313,7 +313,7 @@ export function AddContent() {
                 className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 focus:outline-none focus:ring"
                 placeholder="Ano"
                 onChange={(e) =>
-                  setQuestion({ ...question, edditionYear: e.target.value })
+                  setQuestion({ ...question, editionYear: e.target.value })
                 }
               ></input>
             </div>
