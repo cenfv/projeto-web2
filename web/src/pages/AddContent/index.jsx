@@ -19,7 +19,9 @@ export function AddContent() {
       description: "",
     },
   ]);
-  const [testDescription, setTestDescription] = useState("");
+  const [testDescription, setTestDescription] = useState({
+    description: "",
+  });
   const [showTest, setShowTest] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
   const [quizzes, setQuizzes] = useState([{}]);
@@ -57,9 +59,8 @@ export function AddContent() {
 
   const handleCreateTest = async () => {
     setLoading(true);
-
     return Axios.post(`${process.env.REACT_APP_API_URL}/quiz`, {
-      description: testDescription,
+      description: testDescription.description,
     }).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
@@ -170,6 +171,44 @@ export function AddContent() {
             .includes(queryAlternative.toLowerCase().replace(/\s+/g, ""))
         );
 
+  const addQuiz = async (e) => {
+    e.preventDefault();
+
+    if (!(await quizValidate())) return;
+    let saveDataForm;
+    try {
+      saveDataForm = await handleCreateTest();
+    } catch (err) {
+      setLoading(false);
+      if (
+        err.response.status === 400 &&
+        err.response.statusText === "Bad Request"
+      ) {
+        setStatus({
+          type: "error",
+          message: "Houve um erro ao criar o quiz!",
+        });
+      }
+    }
+    if (!saveDataForm) return;
+    if (saveDataForm) {
+      setStatus({
+        type: "success",
+        message: "Quiz cadastrado com sucesso!",
+      });
+      setQuestion({
+        title: "",
+        description: "",
+        editionYear: "",
+        quiz: "",
+        difficulty: "",
+      });
+      setTimeout(() => {
+        navigate("/question");
+      }, 2000);
+    }
+  };
+
   const addQuestion = async (e) => {
     e.preventDefault();
 
@@ -177,7 +216,6 @@ export function AddContent() {
     let saveDataForm;
     try {
       const question = await handleCreateQuestion();
-      console.log(question);
       const alternative = await handleCreateAlternative(question);
       saveDataForm = await handleCreateQuestionAlternative(
         question,
@@ -219,6 +257,26 @@ export function AddContent() {
       }, 2000);
     }
   };
+  async function quizValidate() {
+    let createQuizSchema = yup.object().shape({
+      description: yup
+        .string("Por favor, entre com um nome para o quiz!")
+        .required("Por favor, entre com um nome para o quiz !"),
+    });
+
+    try {
+      await createQuizSchema.validate(testDescription);
+
+      return true;
+    } catch (err) {
+      console.log(err);
+      setStatus({
+        type: "error",
+        message: err.errors,
+      });
+      return false;
+    }
+  }
 
   async function validate() {
     let quizSchema = yup.object().shape({
@@ -311,32 +369,45 @@ export function AddContent() {
               </button>
             </div>
           </div>
-          <div className={!showTest && "hidden"}>
-            <h3 className="mt-5 text-2xl font-bold text-gray-900">
-              Criar nova prova:
-            </h3>
-            <div className="grid grid-cols-1">
-              <input
-                className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 focus:outline-none focus:ring"
-                placeholder="Nome da prova"
-                onChange={(e) => setTestDescription(e.target.value)}
-              ></input>
+          <form onSubmit={addQuiz}>
+            <div className={!showTest && "hidden"}>
+              <h3 className="mt-5 text-2xl font-bold text-gray-900">
+                Criar nova prova:
+              </h3>
+              <div className="grid grid-cols-1">
+                <input
+                  className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 focus:outline-none focus:ring"
+                  placeholder="Nome da prova"
+                  onChange={(e) =>
+                    setTestDescription({ description: e.target.value })
+                  }
+                ></input>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="flex mt-10 justify-center w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-600"
+                >
+                  Salvar
+                  {loading && (
+                    <AiOutlineLoading3Quarters className="ml-2 w-6 h-6 animate-spin " />
+                  )}
+                </button>
+              </div>
             </div>
-            <div className="flex justify-end">
-              <button
-                onClick={() => {
-                  handleCreateTest();
-                }}
-                className="flex mt-10 justify-center w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-600"
-              >
-                Salvar
-                {loading && (
-                  <AiOutlineLoading3Quarters className="ml-2 w-6 h-6 animate-spin " />
-                )}
-              </button>
-            </div>
-          </div>
-
+          </form>
+          {status.type === "success" ? (
+            <p className="text-center mt-5 text-green-500 text-lg font-bold">
+              {status.message}
+            </p>
+          ) : (
+            ""
+          )}
+          {status.type === "error" ? (
+            <p className="text-center mt-5 text-red-600">{status.message}</p>
+          ) : (
+            ""
+          )}
           <div className={!showQuestion && "hidden"}>
             <h3 className="mt-5 text-2xl font-bold text-gray-900">
               Criar nova questão:
@@ -504,7 +575,6 @@ export function AddContent() {
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
-                      console.log(e.target.files[0]);
                       setSelectedImg(e.target.files[0]);
                     }}
                   ></input>

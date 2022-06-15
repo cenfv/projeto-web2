@@ -26,7 +26,18 @@ export function QuestionContent() {
     });
   };
   const handleSubmitQuestion = async (selectedAlternative) => {
-    console.log(selectedAlternative);
+    setLoading(true);
+    console.log(localStorage.getItem("user"));
+    return Axios.post(`${process.env.REACT_APP_API_URL}/submission`, {
+      user: localStorage.getItem("user"),
+      questionAlternative: selectedAlternative,
+    }).then((response) => {
+      setLoading(false);
+      if (response.status === 201 && response.statusText === "Created") {
+        alert("cadastrado com sucesso");
+        return true;
+      }
+    });
   };
   useEffect(() => {
     handleLoadQuestion();
