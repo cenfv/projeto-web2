@@ -34,7 +34,7 @@ router.get("/", async (req, res, next) => {
   const quiz = req.query.quiz;
   const difficulty = req.query.difficulty;
   try {
-    if (quiz && difficulty) {
+    if (quiz || difficulty) {
       const questions = await questionController.getQuestionByQuizAndDifficulty(
         quiz,
         difficulty
@@ -69,7 +69,19 @@ router.get("/:id", async (req, res, next) => {
     });
   }
 });
-
+router.get("/random/question", async (req, res, next) => {
+  try {
+    const question = await questionController.getRandomQuestion();
+    return res.status(200).json({
+      question,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({
+      msg: "Question not found",
+    });
+  }
+});
 router.post("/", async (req, res, next) => {
   const { title, description, editionYear, difficulty, quiz } = req.body;
   try {

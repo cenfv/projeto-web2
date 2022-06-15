@@ -3,6 +3,16 @@ const User = require("../models/User");
 const QuestionAlternative = require("../models/QuestionAlternative");
 const Alternative = require("../models/Alternative");
 
+const handleErrors = (err) => {
+  let errors = {};
+
+  Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
+
+  return errors;
+};
+
 exports.getAllSubmission = async () => {
   const submission = await Submission.find();
   if (submission) {

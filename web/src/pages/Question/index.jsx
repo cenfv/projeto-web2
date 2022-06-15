@@ -11,6 +11,10 @@ import { BsShuffle } from "react-icons/bs";
 export function Question() {
   const difficulty = [
     {
+      id: 4,
+      description: "Todas",
+    },
+    {
       id: 0,
       description: "Fácil",
     },
@@ -77,35 +81,46 @@ export function Question() {
       }
     });
   };
-  useEffect(
-    () => {
-      handleLoadQuestion();
-    },
-    [selectedDifficulty],
-    [selectedQuiz]
-  );
+  useEffect(() => {
+    handleLoadQuestion();
+  }, [selectedDifficulty]);
+  useEffect(() => {
+    handleLoadQuestion();
+  }, [selectedQuiz]);
   const handleLoadQuestion = async () => {
-    console.log("ate aq");
     setLoading(true);
-    Axios.get(
-      `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}&difficulty=${selectedDifficulty.id}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }
-    ).then((response) => {
-      setLoading(false);
-      if (response.status === 200 && response.statusText === "OK") {
-        setQuestions(response.data.questions);
-      }
-    });
+    if (selectedDifficulty.id === 4) {
+      Axios.get(
+        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("authorization"),
+          },
+        }
+      ).then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setQuestions(response.data.questions);
+        }
+      });
+    } else {
+      Axios.get(
+        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}&difficulty=${selectedDifficulty.id}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("authorization"),
+          },
+        }
+      ).then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setQuestions(response.data.questions);
+        }
+      });
+    }
   };
 
   const handleSubmit = async () => {
-    console.log(selectedQuiz);
-    console.log(selectedDifficulty);
-    console.log(selectedQuestion);
     navigate(`/question/${selectedQuestion._id}`);
   };
   useEffect(() => {
@@ -126,7 +141,27 @@ export function Question() {
               </p>
             </div>
             <div className="flex mt-8  justify-end">
-              <button className="flex flex-row self-end  text-center p-3 bg-indigo-500 text-white font-medium rounded-lg  drop-shadow-lg hover:bg-indigo-600 mb-5">
+              <button
+                onClick={() => {
+                  Axios.get(
+                    `${process.env.REACT_APP_API_URL}/question/random/question`,
+                    {
+                      headers: {
+                        authorization: localStorage.getItem("authorization"),
+                      },
+                    }
+                  ).then((response) => {
+                    setLoading(false);
+                    if (
+                      response.status === 200 &&
+                      response.statusText === "OK"
+                    ) {
+                      navigate(`/question/${response.data.question._id}`);
+                    }
+                  });
+                }}
+                className="flex flex-row self-end  text-center p-3 bg-indigo-500 text-white font-medium rounded-lg  drop-shadow-lg hover:bg-indigo-600 mb-5"
+              >
                 Iniciar de maneira aleatória
                 <BsShuffle className="ml-3 w-5 h-5 self-center" />
               </button>

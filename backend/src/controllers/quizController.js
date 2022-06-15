@@ -1,5 +1,15 @@
 const Quiz = require("../models/Quiz");
 
+const handleErrors = (err) => {
+  let errors = {};
+
+  Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
+
+  return errors;
+};
+
 exports.getAllQuizzes = async () => {
   const quiz = await Quiz.find();
   if (quiz) {

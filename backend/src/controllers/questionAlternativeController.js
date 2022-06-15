@@ -2,6 +2,16 @@ const QuestionAlternative = require("../models/QuestionAlternative");
 const questionController = require("./questionController");
 const alternativeController = require("./alternativeController");
 
+const handleErrors = (err) => {
+  let errors = {};
+
+  Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
+
+  return errors;
+};
+
 exports.getAllQuestionAlternative = async () => {
   const questionAlternative = await QuestionAlternative.find();
   if (questionAlternative) {

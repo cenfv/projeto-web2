@@ -1,5 +1,15 @@
 const Alternative = require("../models/Alternative");
 
+const handleErrors = (err) => {
+  let errors = {};
+
+  Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
+
+  return errors;
+};
+
 exports.getAllAlternatives = async () => {
   const alternative = await Alternative.find();
   if (alternative) {

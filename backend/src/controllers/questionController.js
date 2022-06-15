@@ -1,6 +1,16 @@
 const Question = require("../models/Question");
 const quizController = require("../models/Quiz");
 
+const handleErrors = (err) => {
+  let errors = {};
+
+  Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
+
+  return errors;
+};
+
 exports.getAllQuestions = async () => {
   const question = await Question.find();
   if (question) {
@@ -16,10 +26,18 @@ exports.getQuestionById = async (id) => {
 };
 exports.getQuestionByQuizAndDifficulty = async (quizId, difficulty) => {
   const quiz = await quizController.findById(quizId);
-  const question = await Question.find({
-    quiz: quiz._id,
-    difficulty: difficulty,
-  });
+  let question;
+  if (difficulty) {
+    question = await Question.find({
+      quiz: quiz._id,
+      difficulty: difficulty,
+    });
+  }
+  if (!difficulty) {
+    question = await Question.find({
+      quiz: quiz._id,
+    });
+  }
   if (question) {
     return question;
   }
@@ -52,6 +70,18 @@ exports.createImage = async (id, imageUrl) => {
   try {
     const res = await Question.updateOne({ _id: id }, { imageUrl });
     return res;
+  } catch (err) {
+    const errors = handleErrors(err);
+    throw errors;
+  }
+};
+
+exports.getRandomQuestion = async () => {
+  try {
+    const numItems = await Question.estimatedDocumentCount();
+    const rand = Math.floor(Math.random() * numItems);
+    const randomItem = await Question.findOne().skip(rand);
+    return randomItem;
   } catch (err) {
     const errors = handleErrors(err);
     throw errors;
