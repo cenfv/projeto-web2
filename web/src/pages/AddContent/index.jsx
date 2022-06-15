@@ -38,7 +38,12 @@ export function AddContent() {
     editionYear: "",
   });
 
-  const [status, setStatus] = useState({
+  const [statusQuiz, setStatusQuiz] = useState({
+    type: "",
+    message: "",
+  });
+
+  const [statusQuestion, setStatusQuestion] = useState({
     type: "",
     message: "",
   });
@@ -184,7 +189,7 @@ export function AddContent() {
         err.response.status === 400 &&
         err.response.statusText === "Bad Request"
       ) {
-        setStatus({
+        setStatusQuiz({
           type: "error",
           message: "Houve um erro ao criar o quiz!",
         });
@@ -192,7 +197,7 @@ export function AddContent() {
     }
     if (!saveDataForm) return;
     if (saveDataForm) {
-      setStatus({
+      setStatusQuiz({
         type: "success",
         message: "Quiz cadastrado com sucesso!",
       });
@@ -228,12 +233,12 @@ export function AddContent() {
         err.response.status === 400 &&
         err.response.statusText === "Bad Request"
       ) {
-        setStatus({
+        setStatusQuestion({
           type: "error",
           message: "A questão já existe",
         });
       } else {
-        setStatus({
+        setStatusQuestion({
           type: "error",
           message: "Houve um erro ao criar a questão!",
         });
@@ -241,7 +246,7 @@ export function AddContent() {
     }
     if (!saveDataForm) return;
     if (saveDataForm) {
-      setStatus({
+      setStatusQuestion({
         type: "success",
         message: "Questão cadastrada com sucesso!",
       });
@@ -270,7 +275,7 @@ export function AddContent() {
       return true;
     } catch (err) {
       console.log(err);
-      setStatus({
+      setStatusQuiz({
         type: "error",
         message: err.errors,
       });
@@ -322,7 +327,7 @@ export function AddContent() {
       await selectedAlternativeSchema.validate(selectedAlternative);
       return true;
     } catch (err) {
-      setStatus({
+      setStatusQuestion({
         type: "error",
         message: err.errors,
       });
@@ -383,31 +388,35 @@ export function AddContent() {
                   }
                 ></input>
               </div>
+              {statusQuiz.type === "success" ? (
+                <p className="text-center mt-5 text-green-500 text-lg font-bold">
+                  {statusQuiz.message}
+                </p>
+              ) : (
+                ""
+              )}
+              {statusQuiz.type === "error" ? (
+                <p className="text-center mt-5 text-red-600">
+                  {statusQuiz.message}
+                </p>
+              ) : (
+                ""
+              )}
+              {loading && (
+                <div className="flex mt-5 justify-center">
+                  <AiOutlineLoading3Quarters className="w-12 h-12 animate-spin fill-indigo-500" />
+                </div>
+              )}
               <div className="flex justify-end">
                 <button
                   type="submit"
                   className="flex mt-10 justify-center w-36 bg-indigo-500 text-white font-medium rounded-lg py-4 text-center drop-shadow-lg hover:bg-indigo-600"
                 >
                   Salvar
-                  {loading && (
-                    <AiOutlineLoading3Quarters className="ml-2 w-6 h-6 animate-spin " />
-                  )}
                 </button>
               </div>
             </div>
           </form>
-          {status.type === "success" ? (
-            <p className="text-center mt-5 text-green-500 text-lg font-bold">
-              {status.message}
-            </p>
-          ) : (
-            ""
-          )}
-          {status.type === "error" ? (
-            <p className="text-center mt-5 text-red-600">{status.message}</p>
-          ) : (
-            ""
-          )}
           <div className={!showQuestion && "hidden"}>
             <h3 className="mt-5 text-2xl font-bold text-gray-900">
               Criar nova questão:
@@ -694,16 +703,16 @@ export function AddContent() {
                   </div>
                 </div>
               </div>
-              {status.type === "success" ? (
+              {statusQuestion.type === "success" ? (
                 <p className="text-center mt-5 text-green-500 text-lg font-bold">
-                  {status.message}
+                  {statusQuestion.message}
                 </p>
               ) : (
                 ""
               )}
-              {status.type === "error" ? (
+              {statusQuestion.type === "error" ? (
                 <p className="text-center mt-5 text-red-600">
-                  {status.message}
+                  {statusQuestion.message}
                 </p>
               ) : (
                 ""
