@@ -169,85 +169,87 @@ export function Question() {
           </div>
 
           <div>
-            <div className="grid grid-cols-2 gap-5">
-              <Combobox value={selectedQuiz} onChange={setSelectedQuiz}>
-                <div className="rounded-lg bg-white text-left drop-shadow-lg focus:outline-none z-10">
-                  <Combobox.Input
-                    placeholder="Selecione uma prova"
-                    className="border-none p-4 text-gray-900 focus:outline-none"
-                    displayValue={(quizzes) => quizzes.description}
-                    onChange={(event) => setQueryQuiz(event.target.value)}
-                  />
-                  <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                    <SelectorIcon
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
+            <div className="grid grid-cols-2 gap-5 ">
+              <div className="z-50">
+                <Combobox value={selectedQuiz} onChange={setSelectedQuiz}>
+                  <div className="rounded-lg bg-white text-left drop-shadow-lg focus:outline-none z-10">
+                    <Combobox.Input
+                      placeholder="Selecione uma prova"
+                      className="border-none p-4 text-gray-900 focus:outline-none"
+                      displayValue={(quizzes) => quizzes.description}
+                      onChange={(event) => setQueryQuiz(event.target.value)}
                     />
-                  </Combobox.Button>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                    afterLeave={() => setQueryQuiz("")}
-                  >
-                    <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-base shadow-lg">
-                      {filteredQuiz.length === 0 && queryQuiz !== "" ? (
-                        <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                          Nothing found.
-                        </div>
-                      ) : (
-                        filteredQuiz.map((quiz) => (
-                          <Combobox.Option
-                            key={quiz.id}
-                            className={({ active }) =>
-                              `relative cursor-default select-none p-2 pl-10 pr-4 ${
-                                active
-                                  ? "bg-indigo-500 text-white"
-                                  : "text-gray-900"
-                              }`
-                            }
-                            value={quiz}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <span
-                                  className={`block truncate ${
-                                    selected ? "font-medium" : "font-normal"
-                                  }`}
-                                >
-                                  {quiz.description}
-                                </span>
-                                {selected ? (
+                    <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                      <SelectorIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </Combobox.Button>
+                    <Transition
+                      as={Fragment}
+                      leave="transition ease-in duration-200"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                      afterLeave={() => setQueryQuiz("")}
+                    >
+                      <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-base shadow-lg">
+                        {filteredQuiz.length === 0 && queryQuiz !== "" ? (
+                          <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                            Nothing found.
+                          </div>
+                        ) : (
+                          filteredQuiz.map((quiz) => (
+                            <Combobox.Option
+                              key={quiz.id}
+                              className={({ active }) =>
+                                `relative cursor-default select-none p-2 pl-10 pr-4 ${
+                                  active
+                                    ? "bg-indigo-500 text-white"
+                                    : "text-gray-900"
+                                }`
+                              }
+                              value={quiz}
+                            >
+                              {({ selected, active }) => (
+                                <>
                                   <span
-                                    className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                      active ? "text-white" : "text-teal-600"
+                                    className={`block truncate ${
+                                      selected ? "font-medium" : "font-normal"
                                     }`}
                                   >
-                                    <CheckIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
+                                    {quiz.description}
                                   </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Combobox.Option>
-                        ))
-                      )}
-                    </Combobox.Options>
-                  </Transition>
-                </div>
-              </Combobox>
+                                  {selected ? (
+                                    <span
+                                      className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                        active ? "text-white" : "text-teal-600"
+                                      }`}
+                                    >
+                                      <CheckIcon
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  ) : null}
+                                </>
+                              )}
+                            </Combobox.Option>
+                          ))
+                        )}
+                      </Combobox.Options>
+                    </Transition>
+                  </div>
+                </Combobox>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-5">
-              <div>
+              <div className="z-40">
                 <Combobox
                   value={selectedDifficulty}
                   onChange={setSelectedDifficulty}
                 >
-                  <div className="z-10 mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
+                  <div className="mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
                     <Combobox.Input
                       placeholder="Selecione a dificuldade"
                       className="border-none p-4 text-gray-900 focus:outline-none"
@@ -322,7 +324,7 @@ export function Question() {
             </div>
 
             <div className="grid grid-cols-2 gap-5">
-              <div>
+              <div className="z-30">
                 <Combobox
                   value={selectedQuestion}
                   onChange={setSelectedQuestion}
