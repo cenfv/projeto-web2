@@ -14,7 +14,16 @@ exports.getQuestionById = async (id) => {
     return question;
   }
 };
-
+exports.getQuestionByQuizAndDifficulty = async (quizId, difficulty) => {
+  const quiz = await quizController.findById(quizId);
+  const question = await Question.find({
+    quiz: quiz._id,
+    difficulty: difficulty,
+  });
+  if (question) {
+    return question;
+  }
+};
 exports.createQuestion = async (
   title,
   description,

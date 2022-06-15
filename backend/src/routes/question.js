@@ -7,7 +7,6 @@ const multer = require("multer");
 const upload = multer(uploadConfig.upload("./uploads/images"));
 
 router.patch("/:id/image", upload.single("img"), async (req, res, next) => {
-  console.log(req);
   try {
     const questionId = req.params.id;
     const question = await questionController.getQuestionById(questionId);
@@ -32,7 +31,18 @@ router.patch("/:id/image", upload.single("img"), async (req, res, next) => {
 });
 
 router.get("/", async (req, res, next) => {
+  const quiz = req.query.quiz;
+  const difficulty = req.query.difficulty;
   try {
+    if (quiz && difficulty) {
+      const questions = await questionController.getQuestionByQuizAndDifficulty(
+        quiz,
+        difficulty
+      );
+      return res.status(200).json({
+        questions,
+      });
+    }
     const questions = await questionController.getAllQuestions();
     return res.status(200).json({
       questions,

@@ -45,14 +45,13 @@ exports.createQuestionAlternative = async (
       correctAlternativeId
     );
 
-    console.log(question, alternatives, correctAlternative);
-
     const questionAlternative = new QuestionAlternative({
       question,
       alternative: alternatives,
       correctAlternative,
     });
     const res = await questionAlternative.save();
+
     return res;
   } catch (err) {
     const errors = handleErrors(err);

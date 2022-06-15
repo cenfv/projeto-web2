@@ -42,6 +42,11 @@ router.get("/question/:id", async (req, res, next) => {
       await questionAlternativeController.getQuestionAlternativeByQuestionId(
         questionId
       );
+    if (questionAlternative.length === 0) {
+      return res.status(404).json({
+        msg: "Question-Alternative not found",
+      });
+    }
     return res.status(200).json({
       questionAlternative,
     });
