@@ -27,11 +27,18 @@ export function QuestionContent() {
   };
   const handleSubmitQuestion = async (selectedAlternative) => {
     setLoading(true);
-    console.log(localStorage.getItem("user"));
-    return Axios.post(`${process.env.REACT_APP_API_URL}/submission`, {
-      user: localStorage.getItem("user"),
-      questionAlternative: selectedAlternative,
-    }).then((response) => {
+
+    return Axios.post(
+      `${process.env.REACT_APP_API_URL}/submission/${questionAlternative._id}`,
+      {
+        choice: selectedAlternative._id,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    ).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
         alert("cadastrado com sucesso");

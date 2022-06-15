@@ -17,24 +17,29 @@ exports.getSubmissionById = async (id) => {
 };
 exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId, {
+      password: 0,
+      email: 0,
+      firstName: 0,
+      lastName: 0,
+      gender: 0,
+    });
     const questionAlternative = await QuestionAlternative.findById(
       questionAlternativeId
     );
+
     const choice = await Alternative.findById(choiceId);
     const alternativaCorreta = await Alternative.findById(
       questionAlternative.correctAlternative.toString()
     );
 
     if (JSON.stringify(choice) === JSON.stringify(alternativaCorreta)) {
-      console.log("a");
       submission = new Submission({
         user,
         questionAlternative,
         correctChoice: true,
       });
     } else {
-      console.log("b");
       submission = new Submission({
         user,
         questionAlternative,
@@ -42,8 +47,10 @@ exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
       });
     }
     const res = await submission.save();
+    console.log(res);
     return res;
   } catch (err) {
+    console.log(err);
     const errors = handleErrors(err);
     throw errors;
   }

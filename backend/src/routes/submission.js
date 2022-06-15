@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const submissionController = require("../controllers/submissionController");
+const checkToken = require("../helpers/checkToken");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -33,11 +34,12 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  const { user, questionAlternative, choice } = req.body;
+router.post("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
+  const questionAlternative = req.params.id;
+  const { choice } = req.body;
   try {
     const submission = await submissionController.createSubmission(
-      user,
+      req.id,
       questionAlternative,
       choice
     );
@@ -45,6 +47,7 @@ router.post("/", async (req, res, next) => {
       submission,
     });
   } catch (err) {
+    console.log(err);
     return res.status(400).json({
       validationError: err,
     });
