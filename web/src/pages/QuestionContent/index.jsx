@@ -1,5 +1,6 @@
 import { Footer } from "../../components/Footer";
 import { DashboardNavBar } from "../../components/DashboardNavBar";
+import { NotFound } from "../../components/NotFound";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
@@ -9,6 +10,11 @@ export function QuestionContent() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [questionAlternative, setQuestionAlternative] = useState({});
+  const [notFound, setNotFound] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState({
+    id: null,
+    correct: false,
+  });
   const handleLoadQuestion = async () => {
     setLoading(true);
     Axios.get(
@@ -18,14 +24,24 @@ export function QuestionContent() {
           authorization: localStorage.getItem("authorization"),
         },
       }
-    ).then((response) => {
-      setLoading(false);
-      if (response.status === 200 && response.statusText === "OK") {
-        setQuestionAlternative(response.data.questionAlternative[0]);
-      }
-    });
+    )
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          if (!response.data.questionAlternative[0]) {
+            setNotFound(true);
+          }
+          setQuestionAlternative(response.data.questionAlternative[0]);
+          return true;
+        }
+      })
+      .catch((err) => {
+        setNotFound(true);
+        setLoading(false);
+        return false;
+      });
   };
-  const handleSubmitQuestion = async (selectedAlternative) => {
+  const handleSubmitQuestion = async (selectedAlternative, index) => {
     setLoading(true);
 
     return Axios.post(
@@ -41,10 +57,31 @@ export function QuestionContent() {
     ).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
-        alert("cadastrado com sucesso");
+        if (response.data.submission.correctChoice === true) {
+          setCorrectAnswer({ id: index, correct: true });
+        } else {
+          setCorrectAnswer({ id: index, correct: false });
+        }
         return true;
       }
     });
+  };
+  const handleDisplayAnswer = () => {
+    if (correctAnswer.correct === true && correctAnswer.id !== null) {
+      return (
+        <div className="flex flex-row font-semibold">
+          <p className="text-indigo-500 font-bold">Parabéns</p>
+          <span>, você acertou a questão!</span>
+        </div>
+      );
+    } else if (correctAnswer.correct === false && correctAnswer.id !== null) {
+      return (
+        <div className="flex flex-row font-semibold">
+          <p className="text-red-500 font-bold">Oh não</p>
+          <span>, que pena, tente novamente!</span>
+        </div>
+      );
+    }
   };
   useEffect(() => {
     handleLoadQuestion();
@@ -52,54 +89,69 @@ export function QuestionContent() {
 
   return (
     <>
-      <div className="min-h-screen">
-        <DashboardNavBar />
-        <div className="max-w-6xl mx-auto">
-          <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl"></h1>
-          {questionAlternative.question?.title}
-          <h5 className="mt-5 text-lg text-justify font-medium">
-            Ano: {questionAlternative.question?.editionYear} | Nível:{" "}
-            {questionAlternative.question?.difficulty}
-          </h5>
-          <p className="mt-5 text-lg text-justify">
-            {questionAlternative.question?.description}
-          </p>
-          {questionAlternative.question?.imageUrl && (
-            <img
-              className="mx-auto mt-5 max-h-72"
-              src={`${process.env.REACT_APP_API_URL}/files/${questionAlternative.question?.imageUrl}`}
-              alt="Imagem questão"
-            />
-          )}
+      {notFound ? (
+        <NotFound />
+      ) : (
+        <>
+          <div className="min-h-screen">
+            <DashboardNavBar />
+            <div className="max-w-6xl mx-auto">
+              <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl"></h1>
+              {questionAlternative.question?.title}
+              <h5 className="mt-5 text-lg text-justify font-medium">
+                Ano: {questionAlternative.question?.editionYear} | Nível:{" "}
+                {questionAlternative.question?.difficulty}
+              </h5>
+              <p className="mt-5 text-lg text-justify">
+                {questionAlternative.question?.description}
+              </p>
+              {questionAlternative.question?.imageUrl && (
+                <img
+                  className="mx-auto mt-5 max-h-72"
+                  src={`${process.env.REACT_APP_API_URL}/files/${questionAlternative.question?.imageUrl}`}
+                  alt="Imagem questão"
+                />
+              )}
 
-          <div className="grid grid-cols-2 mt-5 gap-4">
-            {questionAlternative.alternative?.map((alternative, index) => {
-              return (
-                <button
-                  className="bg-white rounded-lg p-4 drop-shadow-lg mt-3 hover:bg-indigo-500 hover:text-white"
-                  onClick={() => {
-                    handleSubmitQuestion(alternative);
-                  }}
-                >
-                  {String.fromCharCode(index + 1 + 64).toLowerCase()}
-                  {")"} {alternative.description}
-                </button>
-              );
-            })}
-          </div>
-          <div className="grid grid-cols-2">
-            <div className="flex justify-start mt-5 text-lg">
-              <button>{"< "}Anterior</button>
+              <div className="grid grid-cols-2 mt-5 gap-4">
+                {questionAlternative.alternative?.map((alternative, index) => {
+                  return (
+                    <button
+                      className={`bg-white rounded-lg p-4 drop-shadow-lg mt-3 hover:bg-indigo-500 hover:text-white ${
+                        correctAnswer.id === index &&
+                        correctAnswer.correct === true &&
+                        "bg-indigo-500 text-white"
+                      } ${
+                        correctAnswer.id === index &&
+                        correctAnswer.correct === false &&
+                        "bg-red-500 text-white"
+                      }`}
+                      onClick={() => {
+                        handleSubmitQuestion(alternative, index);
+                      }}
+                    >
+                      {String.fromCharCode(index + 1 + 64).toLowerCase()}
+                      {")"} {alternative.description}
+                    </button>
+                  );
+                })}
+                <div>{handleDisplayAnswer()}</div>
+              </div>
+              <div className="grid grid-cols-2">
+                <div className="flex justify-start mt-5 text-lg">
+                  <button>{"< "}Anterior</button>
+                </div>
+                <div className="flex justify-end mt-5 text-lg">
+                  <button>Próxima{" >"}</button>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-end mt-5 text-lg">
-              <button>Próxima{" >"}</button>
-            </div>
           </div>
-        </div>
-      </div>
-      <div className="mb-5 left-0 bottom-0 w-full">
-        <Footer />
-      </div>
+          <div className="mb-5 left-0 bottom-0 w-full">
+            <Footer />
+          </div>
+        </>
+      )}
     </>
   );
 }

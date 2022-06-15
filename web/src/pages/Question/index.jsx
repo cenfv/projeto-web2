@@ -3,6 +3,7 @@ import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { useState, Fragment } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useEffect } from "react";
 import { BsShuffle } from "react-icons/bs";
@@ -31,6 +32,8 @@ export function Question() {
   const [queryQuiz, setQueryQuiz] = useState("");
   const [queryDifficulty, setQueryDifficulty] = useState("");
   const [queryQuestion, setQueryQuestion] = useState("");
+
+  const navigate = useNavigate();
 
   const filteredQuiz =
     queryQuiz === ""
@@ -74,23 +77,39 @@ export function Question() {
       }
     });
   };
-
+  useEffect(
+    () => {
+      handleLoadQuestion();
+    },
+    [selectedDifficulty],
+    [selectedQuiz]
+  );
   const handleLoadQuestion = async () => {
+    console.log("ate aq");
     setLoading(true);
-    Axios.get(`${process.env.REACT_APP_API_URL}/question`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    }).then((response) => {
+    Axios.get(
+      `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}&difficulty=${selectedDifficulty.id}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    ).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setQuestions(response.data.questions);
       }
     });
   };
+
+  const handleSubmit = async () => {
+    console.log(selectedQuiz);
+    console.log(selectedDifficulty);
+    console.log(selectedQuestion);
+    navigate(`/question/${selectedQuestion._id}`);
+  };
   useEffect(() => {
     handleLoadQuiz();
-    handleLoadQuestion();
   }, []);
   return (
     <>
@@ -347,7 +366,10 @@ export function Question() {
 
             <div className="grid grid-cols-2 gap-5">
               <div className="flex justify-end">
-                <button className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-2 text-center drop-shadow-lg mt-10 hover:bg-indigo-600 mb-5">
+                <button
+                  onClick={() => handleSubmit()}
+                  className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-2 text-center drop-shadow-lg mt-10 hover:bg-indigo-600 mb-5"
+                >
                   Iniciar
                 </button>
               </div>
