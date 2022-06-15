@@ -19,6 +19,53 @@ exports.getAllSubmission = async () => {
     return submission;
   }
 };
+exports.getSubmissionByUserId = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    const submission = await Submission.aggregate([
+      {
+        $match: { user: user._id, correctChoice: true },
+      },
+      {
+        $group: {
+          _id: "$questionAlternative",
+          data: { $first: "$$ROOT" },
+        },
+      },
+
+      {
+        $project: {
+          _id: "$data._id",
+          user: "$data.user",
+          questionAlternative: "$data.questionAlternative",
+          correctChoice: "$data.correctChoice",
+          submissionDate: "$data.submissionDate",
+        },
+      },
+      {
+        $lookup: {
+          from: "questionalternatives",
+          localField: "questionAlternative",
+          foreignField: "_id",
+          as: "questionAlternative",
+        },
+      },
+      {
+        $lookup: {
+          from: "questions",
+          localField: "questionAlternative.question",
+          foreignField: "_id",
+          as: "questionAlternative.question",
+        },
+      },
+    ]);
+    if (submission) {
+      return submission;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 exports.getSubmissionById = async (id) => {
   const submission = await Submission.findById(id);
   if (submission) {
