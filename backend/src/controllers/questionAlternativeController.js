@@ -14,6 +14,19 @@ exports.getQuestionAlternativeById = async (id) => {
     return questionAlternative;
   }
 };
+exports.getQuestionAlternativeByQuestionId = async (questionId) => {
+  const questionAlternative = await QuestionAlternative.find({
+    question: questionId,
+  })
+    .populate("alternative")
+    .populate("correctAlternative")
+    .populate("question");
+
+  console.log(questionAlternative);
+  if (questionAlternative) {
+    return questionAlternative;
+  }
+};
 exports.createQuestionAlternative = async (
   questionId,
   alternativeId,

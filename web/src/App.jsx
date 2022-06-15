@@ -9,6 +9,7 @@ import { About } from "./pages/About";
 import { Dashboard } from "./pages/Dashboard";
 import { AddContent } from "./pages/AddContent";
 import { Question } from "./pages/Question";
+import { QuestionContent } from "./pages/QuestionContent";
 import {
   ProtectedRoutes,
   LoggedUserRedirect,
@@ -31,6 +32,7 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/add-content" element={<AddContent />} />
           <Route path="/question" element={<Question />} />
+          <Route path="/question/:id" element={<QuestionContent />} />
         </Route>
       </Routes>
     </BrowserRouter>
