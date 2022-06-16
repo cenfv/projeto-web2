@@ -19,7 +19,7 @@ exports.getAllSubmission = async () => {
     return submission;
   }
 };
-exports.getSubmissionByUserId = async (userId) => {
+exports.getSubmissionByUserId = async (userId, page, pageSize) => {
   try {
     const user = await User.findById(userId);
     const submission = await Submission.aggregate([
@@ -32,7 +32,7 @@ exports.getSubmissionByUserId = async (userId) => {
           data: { $first: "$$ROOT" },
         },
       },
-
+      { $sort: { "data._id": 1 } },
       {
         $project: {
           _id: "$data._id",
@@ -56,6 +56,12 @@ exports.getSubmissionByUserId = async (userId) => {
           localField: "questionAlternative.question",
           foreignField: "_id",
           as: "questionAlternative.question",
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "total" }, { $addFields: { page: page } }],
+          data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
         },
       },
     ]);

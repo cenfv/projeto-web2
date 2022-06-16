@@ -55,6 +55,9 @@ router.post("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
 });
 router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const targetId = req.params.id;
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+
   if (targetId != req.id) {
     return res.status(404).json({
       msg: "User not authenticated",
@@ -62,7 +65,9 @@ router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   }
   try {
     const submission = await submissionController.getSubmissionByUserId(
-      targetId
+      targetId,
+      page,
+      limit
     );
     return res.status(200).json({
       submission,
