@@ -29,7 +29,12 @@ export function Login() {
     }).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
-        dispatch(changeUser(response.data.user.firstName));
+        dispatch(
+          changeUser({
+            name: response.data.user.firstName,
+            id: response.data.user._id,
+          })
+        );
         localStorage.setItem("authorization", `Bearer ${response.data.token}`);
         return true;
       }

@@ -3,15 +3,19 @@ import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { DataTable } from "../../components/DataTable";
 import Axios from "axios";
 import { useEffect, useState } from "react";
+import { selectUser } from "../../redux/userSlice";
+import { useSelector } from "react-redux";
 
 export function Dashboard() {
   const [loading, setLoading] = useState(false);
+  const { name, isLogged, id } = useSelector(selectUser);
   const [userSubmissionData, setUserSubmissionData] = useState({});
+  const [page, setPage] = useState(1);
 
   const handleLoadUserSubmissionsByUserId = async () => {
     setLoading(true);
     Axios.get(
-      `${process.env.REACT_APP_API_URL}/submission/user/62a6f617b189771e574f12b0`,
+      `${process.env.REACT_APP_API_URL}/submission/user/${id}?page=${page}&limit=10`,
       {
         headers: {
           authorization: localStorage.getItem("authorization"),
@@ -32,7 +36,7 @@ export function Dashboard() {
 
   useEffect(() => {
     handleLoadUserSubmissionsByUserId();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -105,6 +109,46 @@ export function Dashboard() {
               <h3 className="mt-8 text-2xl font-bold text-gray-900 sm:text-3xl">
                 Histórico
               </h3>
+              <div className="my-6 justify-center">
+                <nav className="flex my-6 items-center w-full">
+                  <ul className="flex h-full w-auto">
+                    <li>
+                      <button
+                        disabled={page === 1}
+                        onClick={(e) => {
+                          setPage(page - 1);
+                        }}
+                        className="h-full bg-white border border-gray-300 text-gray-500 disabled:opacity-50 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg  py-2 px-3 "
+                      >
+                        Anterior
+                      </button>
+                    </li>
+                    <li>
+                      <input
+                        value={page}
+                        id="page"
+                        name="page"
+                        className="h-full w-10 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        placeholder="01"
+                      />
+                    </li>
+                    <li>
+                      <button
+                        disabled={
+                          Object.keys(userSubmissionData).length === 0 ||
+                          userSubmissionData[0]?.data?.length < 10
+                        }
+                        onClick={() => {
+                          setPage(page + 1);
+                        }}
+                        className="h-full bg-white border border-gray-300 text-gray-500  disabled:opacity-50 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-r-lg  py-2 px-3 "
+                      >
+                        Próxima
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
               <DataTable data={userSubmissionData} />
             </div>
           </div>
