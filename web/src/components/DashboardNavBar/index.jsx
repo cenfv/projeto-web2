@@ -40,6 +40,12 @@ export function DashboardNavBar({ text }) {
             >
               Editar provas
             </Link>
+            <Link
+              to="/admin"
+              className="font-medium text-gray-500 hover:text-indigo-600"
+            >
+              Admin
+            </Link>
           </div>
 
           <div className="flex space-x-10 items-center">
