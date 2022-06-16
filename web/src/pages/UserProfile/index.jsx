@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { Footer } from "../../components/Footer";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+
 export function UserProfile() {
+  let navigate = useNavigate();
+
   const [user, setUser] = useState({
     id: "",
     firstName: "",
@@ -37,6 +42,123 @@ export function UserProfile() {
       }
     });
   }, []);
+
+  const handleUpdateUser = async () => {
+    setLoading(true);
+    Axios.put(
+      `${process.env.REACT_APP_API_URL}/user/${user.id}`,
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: user.password,
+        gender: user.gender,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    )
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setStatus({
+            type: "success",
+            message: "Usuário atualizado com sucesso!",
+          });
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        setStatus({
+          type: "error",
+          message: "Houve um erro ao atualizar o usuário",
+        });
+      });
+  };
+
+  const updateUser = async (e) => {
+    e.preventDefault();
+
+    if (!(await validate())) return;
+    let saveDataForm;
+    try {
+      saveDataForm = await handleUpdateUser();
+    } catch (err) {
+      setLoading(false);
+      if (
+        err.response.status === 400 &&
+        err.response.statusText === "Bad Request"
+      ) {
+        setStatus({
+          type: "error",
+          message: "O email fornecido já existe",
+        });
+      } else {
+        setStatus({
+          type: "error",
+          message: "Houve um erro ao realizar a alteração!",
+        });
+      }
+    }
+    if (!saveDataForm) return;
+    if (saveDataForm) {
+      setStatus({
+        type: "success",
+        message: "Alteração realizada com sucesso!",
+      });
+      setUser({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        gender: "",
+      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    }
+  };
+
+  async function validate() {
+    let schema = yup.object().shape({
+      gender: yup
+        .string("Por favor selecione o seu gênero!")
+        .required("Por favor selecione o seu gênero!"),
+      confirmPassword: yup
+        .string("Por favor insira uma confirmação da senha!")
+        .when("password", {
+          is: (password) => (password ? true : false),
+          then: yup.string().required("Por favor confirme a senha!"),
+        })
+        .oneOf([yup.ref("password")], "As senhas não conferem."),
+      password: yup
+        .string("Por favor insira uma senha!")
+        .min(6, "A senha deve possuir um mínimo de 6 caracteres."),
+      email: yup
+        .string("Por favor insira um email!")
+        .required("Por favor insira um email!")
+        .email("Por favor insira um email válido!"),
+      lastName: yup
+        .string("Por favor insira o seu último nome!")
+        .required("Por favor insira o seu último nome!"),
+      firstName: yup
+        .string("Por favor insira um nome!")
+        .required("Por favor insira um nome!"),
+    });
+
+    try {
+      await schema.validate(user);
+      return true;
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: err.errors,
+      });
+      return false;
+    }
+  }
+
   return (
     <>
       <div className="min-h-screen">
@@ -57,6 +179,7 @@ export function UserProfile() {
                   Mantenha suas informações sempre atualizadas.
                 </p>
               </div>
+              <form onSubmit={updateUser}>
               <div
                 className={`${
                   loading && "opacity-50"
@@ -103,6 +226,7 @@ export function UserProfile() {
                   <input
                     type="email"
                     name="email"
+                    disabled={true}
                     id="email-address"
                     onChange={(e) =>
                       setUser({ ...user, email: e.target.value })
@@ -200,43 +324,6 @@ export function UserProfile() {
                     <button
                       type="submit"
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={() => {
-                        setLoading(true);
-                        Axios.put(
-                          `${process.env.REACT_APP_API_URL}/user/${user.id}`,
-                          {
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            password: user.password,
-                            gender: user.gender,
-                          },
-                          {
-                            headers: {
-                              authorization:
-                                localStorage.getItem("authorization"),
-                            },
-                          }
-                        )
-                          .then((response) => {
-                            setLoading(false);
-                            if (
-                              response.status === 200 &&
-                              response.statusText === "OK"
-                            ) {
-                              setStatus({
-                                type: "success",
-                                message: "Usuário atualizado com sucesso!",
-                              });
-                            }
-                          })
-                          .catch(() => {
-                            setLoading(false);
-                            setStatus({
-                              type: "error",
-                              message: "Houve um erro ao atualizar o usuário",
-                            });
-                          });
-                      }}
                     >
                       Salvar
                       {loading && (
@@ -260,6 +347,7 @@ export function UserProfile() {
                   )}
                 </div>
               </div>
+              </form>
             </div>
           </div>
         </div>
