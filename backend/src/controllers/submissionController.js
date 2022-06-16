@@ -24,6 +24,45 @@ exports.getSubmissionByUserId = async (userId, page, pageSize) => {
     const user = await User.findById(userId);
     const submission = await Submission.aggregate([
       {
+        $match: { user: user._id },
+      },
+      { $sort: { "data._id": 1 } },
+
+      {
+        $lookup: {
+          from: "questionalternatives",
+          localField: "questionAlternative",
+          foreignField: "_id",
+          as: "questionAlternative",
+        },
+      },
+      {
+        $lookup: {
+          from: "questions",
+          localField: "questionAlternative.question",
+          foreignField: "_id",
+          as: "questionAlternative.question",
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "total" }, { $addFields: { page: page } }],
+          data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+        },
+      },
+    ]);
+    if (submission) {
+      return submission;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.getCorrectSubmissionByUserId = async (userId, page, pageSize) => {
+  try {
+    const user = await User.findById(userId);
+    const submission = await Submission.aggregate([
+      {
         $match: { user: user._id, correctChoice: true },
       },
       {
@@ -116,5 +155,49 @@ exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
     console.log(err);
     const errors = handleErrors(err);
     throw errors;
+  }
+};
+
+exports.getSubmissionStatistics = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    const questionsQuantity = await QuestionAlternative.find().count();
+    const solvedQuantity = await Submission.aggregate([
+      {
+        $match: { user: user._id },
+      },
+      {
+        $group: {
+          _id: "$questionAlternative",
+          data: { $first: "$$ROOT" },
+        },
+      },
+      {
+        $count: "total",
+      },
+    ]);
+    const submissionQuantity = await Submission.aggregate([
+      {
+        $match: { user: user._id },
+      },
+      {
+        $count: "total",
+      },
+    ]);
+    const correctSubmissionRate =
+      (solvedQuantity[0].total / submissionQuantity[0].total) * 100;
+
+    progressRate = (solvedQuantity[0].total / questionsQuantity) * 100;
+
+    remainingQuestions = questionsQuantity - solvedQuantity[0].total;
+
+    return {
+      progressRate,
+      correctSubmissionRate,
+      solvedQuantity: solvedQuantity[0].total,
+      remainingQuestions,
+    };
+  } catch (err) {
+    console.log(err);
   }
 };
