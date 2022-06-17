@@ -176,6 +176,15 @@ exports.getSubmissionStatistics = async (userId) => {
         $count: "total",
       },
     ]);
+    const correctQuantity = await Submission.aggregate([
+      {
+        $match: { user: user._id, correctChoice: true },
+      },
+
+      {
+        $count: "total",
+      },
+    ]);
     const submissionQuantity = await Submission.aggregate([
       {
         $match: { user: user._id },
@@ -184,8 +193,9 @@ exports.getSubmissionStatistics = async (userId) => {
         $count: "total",
       },
     ]);
+
     const correctSubmissionRate =
-      (solvedQuantity[0].total / submissionQuantity[0].total) * 100;
+      (correctQuantity[0].total / submissionQuantity[0].total) * 100;
 
     progressRate = (solvedQuantity[0].total / questionsQuantity) * 100;
 
