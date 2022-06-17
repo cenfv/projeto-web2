@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const submissionController = require("../controllers/submissionController");
 const checkToken = require("../helpers/checkToken");
+const checkAdmin = require("../helpers/checkAdmin");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -58,8 +59,8 @@ router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
   const correctOnly = req.query.correctOnly;
-
-  if (targetId != req.id) {
+  const admin = await checkAdmin.checkAdmin(req, res);
+  if (targetId != req.id && !admin) {
     return res.status(404).json({
       msg: "User not authenticated",
     });
@@ -77,7 +78,6 @@ router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
         submission,
       });
     } else {
-      console.log("false");
       const submission = await submissionController.getSubmissionByUserId(
         targetId,
         page,

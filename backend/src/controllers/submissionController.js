@@ -21,7 +21,9 @@ exports.getAllSubmission = async () => {
 };
 exports.getSubmissionByUserId = async (userId, page, pageSize) => {
   try {
+    console.log(userId);
     const user = await User.findById(userId);
+    console.log(user);
     const submission = await Submission.aggregate([
       {
         $match: { user: user._id },
