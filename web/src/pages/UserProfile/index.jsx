@@ -181,9 +181,10 @@ export function UserProfile() {
                 </div>
               )}
               <div className="sm:px-0 p-6">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                <h1 className="text-3xl font-bold text-gray-900 sm:text-3xl">
                   Informações pessoais
-                </h3>
+                </h1>
+
                 <p className="mt-1 text-sm text-gray-600 ">
                   Mantenha suas informações sempre atualizadas.
                 </p>
@@ -192,11 +193,11 @@ export function UserProfile() {
                 <div
                   className={`${
                     loading && "opacity-50"
-                  }  bg-white rounded-md m-2 sm:m-6 sm:ml-10 justify-between w-full p-5 `}
+                  }   rounded-md m-2 sm:m-6 sm:ml-10 bg-white max-w-6xl mx-auto rounded-lg p-10 my-5 shadow-md `}
                 >
                   <div className="flex flex-wrap sm:flex-nowrap">
                     <div className=" w-full">
-                      <label className="text-sm font-medium text-gray-700">
+                      <label className="text-sm font-medium  text-gray-700">
                         Primeiro nome
                       </label>
                       <input

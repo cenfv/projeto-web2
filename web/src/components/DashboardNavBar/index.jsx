@@ -39,7 +39,7 @@ export function DashboardNavBar({ text }) {
     handleGetUserPermission();
   }, []);
   return (
-    <div className="border-b-2 bg-white  border-gray-100">
+    <div className="border-b-2 bg-white  border-gray-100 shadow-sm">
       <div className=" py-5 items-center justify-center max-w-6xl mx-auto ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-10">

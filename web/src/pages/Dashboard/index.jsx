@@ -25,7 +25,12 @@ export function Dashboard() {
   const [page, setPage] = useState(1);
   const [selectedFilter, setSelectedFilter] = useState(filter[0]);
   const [queryFilter, setQueryFilter] = useState("");
-  const [userStatistics, setUserStatistics] = useState({});
+  const [userStatistics, setUserStatistics] = useState({
+    progressRate: 0,
+    correctSubmissionRate: 0,
+    solvedQuantity: 0,
+    remainingQuestions: 0,
+  });
   const handleLoadUserSubmissionsByUserId = async () => {
     setLoading(true);
     let string;
@@ -46,7 +51,6 @@ export function Dashboard() {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setUserSubmissionData(response.data.submission);
-          console.log(response.data.submission);
         }
       })
       .catch((err) => {
@@ -67,7 +71,14 @@ export function Dashboard() {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setUserStatistics(response.data.statistics);
-          console.log(response.data.statistics);
+          if (!response.data.statistics) {
+            setUserStatistics({
+              progressRate: 0,
+              correctSubmissionRate: 0,
+              solvedQuantity: 0,
+              remainingQuestions: 0,
+            });
+          }
         }
       })
       .catch((err) => {
@@ -96,8 +107,8 @@ export function Dashboard() {
     <>
       <div className="min-h-screen bg-gray-50">
         <DashboardNavBar />
-        <div className="shadow-md bg-white max-w-6xl mx-auto mt-5 p-2 rounded-lg">
-          <div className="m-7">
+        <div className="bg-white max-w-6xl mx-auto rounded-lg p-10 my-5 shadow-md">
+          <div>
             <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-3xl">
               Dashboard
             </h1>
@@ -154,13 +165,13 @@ export function Dashboard() {
 
             <div>
               <div>
-                <h3 className="mt-8 text-2xl font-bold text-gray-900 sm:text-3xl">
+                <h3 className="mt-3 text-3xl font-bold text-gray-900 sm:text-3xl">
                   Desempenho
                 </h3>
               </div>
             </div>
             <div>
-              <h3 className="mt-8 text-2xl font-bold text-gray-900 sm:text-3xl">
+              <h3 className="mt-3 text-3xl font-bold text-gray-900 sm:text-3xl">
                 Histórico
               </h3>
               <div className="my-2 justify-center">

@@ -187,7 +187,7 @@ export function Register() {
                 name="confirmPassword"
                 type="password"
                 autoComplete="current-password"
-                className="mt-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="mt-3 mb-3 appearance-none rounded-none w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Confirmar senha"
                 onChange={(event) =>
                   setUser({ ...user, confirmPassword: event.target.value })

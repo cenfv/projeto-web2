@@ -8,15 +8,11 @@ export function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
-    <div className="border-b-2 border-gray-100">
+    <div className="border-b-2 border-gray-100 shadow-sm">
       <div className=" py-7 items-center justify-center max-w-6xl mx-auto ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-10">
-            <img
-              className="h-12 w-auto"
-              src={logo}
-              alt="logo"
-            />
+            <img className="h-12 w-auto" src={logo} alt="logo" />
             <Link
               to="/"
               className="font-medium text-gray-500 hover:text-indigo-600"

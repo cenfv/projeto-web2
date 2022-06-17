@@ -164,7 +164,7 @@ exports.getSubmissionStatistics = async (userId) => {
   try {
     const user = await User.findById(userId);
     const questionsQuantity = await QuestionAlternative.find().count();
-    const solvedQuantity = await Submission.aggregate([
+    let solvedQuantity = await Submission.aggregate([
       {
         $match: { user: user._id },
       },
@@ -196,17 +196,30 @@ exports.getSubmissionStatistics = async (userId) => {
       },
     ]);
 
-    const correctSubmissionRate =
-      (correctQuantity[0].total / submissionQuantity[0].total) * 100;
+    let correctSubmissionRate =
+      (correctQuantity[0]?.total / submissionQuantity[0]?.total) * 100;
 
-    progressRate = (solvedQuantity[0].total / questionsQuantity) * 100;
+    let progressRate = (solvedQuantity[0]?.total / questionsQuantity) * 100;
 
-    remainingQuestions = questionsQuantity - solvedQuantity[0].total;
+    let remainingQuestions = questionsQuantity - solvedQuantity[0]?.total;
 
+    console.log(!progressRate);
+    console.log(!correctSubmissionRate);
+    console.log(!solvedQuantity);
+    console.log(!remainingQuestions);
+    if (!progressRate || !correctSubmissionRate || !solvedQuantity[0].total) {
+      console.log("vix");
+      return {
+        progressRate: 0,
+        correctSubmissionRate: 0,
+        solvedQuantity: 0,
+        remainingQuestions: questionsQuantity,
+      };
+    }
     return {
       progressRate,
       correctSubmissionRate,
-      solvedQuantity: solvedQuantity[0].total,
+      solvedQuantity: solvedQuantity[0]?.total,
       remainingQuestions,
     };
   } catch (err) {

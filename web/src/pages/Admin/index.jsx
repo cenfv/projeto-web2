@@ -125,10 +125,10 @@ export function Admin() {
     <>
       <div className="min-h-screen bg-gray-50">
         <DashboardNavBar />
-        <div className=" bg-white max-w-6xl mx-auto rounded-lg p-10 my-5">
+        <div className=" bg-white max-w-6xl mx-auto rounded-lg p-10 my-5 shadow-md">
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-3xl">
                 Admin
               </h1>
               <p className="mt-2 text-lg font-normal text-gray-900 sm:text-lg">

@@ -369,11 +369,11 @@ export function AddContent() {
     <>
       <div className="min-h-screen bg-gray-50">
         <DashboardNavBar />
-        <div className=" bg-white max-w-6xl mx-auto rounded-lg p-10 mt-5">
-          <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl">
+        <div className=" bg-white max-w-6xl mx-auto rounded-lg p-10 my-5 shadow-md">
+          <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-3xl">
             Adicionar
           </h1>
-          <p className="mt-5 font-medium text-lg">
+          <p className="mt-2 text-lg font-normal text-gray-900 sm:text-lg">
             Selecione o que deseja adicionar:
           </p>
           <div>
