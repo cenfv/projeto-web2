@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectUser, logout } from "../../redux/userSlice";
+import logo from "../../assets/logoH.png";
 
 export function Navbar() {
   const { name, isLogged } = useSelector(selectUser);
@@ -12,8 +13,8 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-10">
             <img
-              className="h-8 w-auto sm:h-10"
-              src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
+              className="h-12 w-auto"
+              src={logo}
               alt="logo"
             />
             <Link

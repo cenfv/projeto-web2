@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import * as yup from "yup";
+import logo from "../../assets/logoV.png";
 
 export function Register() {
   let navigate = useNavigate();
@@ -124,11 +125,9 @@ export function Register() {
       <div className="flex max-w-6xl m-auto justify-center -mt-10">
         <div className="flex min-h-screen items-center">
           <div className="flex flex-col p-6 rounded-lg shadow-lg bg-white max-w-sm justify-center">
-            <img
-              className="w-1/2 h-medium self-center"
-              src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
-              alt="logo"
-            />
+            <Link to={"/"} className="w-1/2 h-medium self-center">
+              <img src={logo} alt="logo" />
+            </Link>
             <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
               Criar uma nova conta
             </h2>
