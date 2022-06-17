@@ -108,13 +108,21 @@ export function AddContent() {
   const handleCreateQuestion = async () => {
     setLoading(true);
 
-    return Axios.post(`${process.env.REACT_APP_API_URL}/question`, {
-      title: question.title,
-      description: question.description,
-      editionYear: question.editionYear,
-      quiz: selectedTest._id,
-      difficulty: question.difficulty,
-    }).then((response) => {
+    return Axios.post(
+      `${process.env.REACT_APP_API_URL}/question`,
+      {
+        title: question.title,
+        description: question.description,
+        editionYear: question.editionYear,
+        quiz: selectedTest._id,
+        difficulty: question.difficulty,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    ).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
         return response.data.question;
@@ -125,9 +133,17 @@ export function AddContent() {
 
   const handleCreateAlternative = async () => {
     setLoading(true);
-    return Axios.post(`${process.env.REACT_APP_API_URL}/alternative`, {
-      alternatives: answers,
-    })
+    return Axios.post(
+      `${process.env.REACT_APP_API_URL}/alternative`,
+      {
+        alternatives: answers,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    )
       .then((response) => {
         setLoading(false);
         if (response.status === 201 && response.statusText === "Created") {
@@ -147,12 +163,20 @@ export function AddContent() {
       return alt._id;
     });
 
-    return Axios.post(`${process.env.REACT_APP_API_URL}/question-alternative`, {
-      question: question._id,
-      alternative: aux,
-      correctAlternative: alternative.alternative.at(selectedAlternative.id)
-        ._id,
-    })
+    return Axios.post(
+      `${process.env.REACT_APP_API_URL}/question-alternative`,
+      {
+        question: question._id,
+        alternative: aux,
+        correctAlternative: alternative.alternative.at(selectedAlternative.id)
+          ._id,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    )
       .then((response) => {
         setLoading(false);
         if (response.status === 201 && response.statusText === "Created") {
@@ -175,6 +199,7 @@ export function AddContent() {
       data,
       {
         headers: {
+          authorization: localStorage.getItem("authorization"),
           accept: "application/json",
           "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
         },

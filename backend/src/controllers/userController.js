@@ -72,7 +72,14 @@ exports.userAuth = async (email, password) => {
   const user = await User.findOne({ email: email });
   const checkPassword = await bcrypt.compare(password, user.password);
   if (checkPassword) {
-    return user;
+    return {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      gender: user.gender,
+      role: user.role,
+    };
   }
 };
 exports.getUserById = async (id) => {

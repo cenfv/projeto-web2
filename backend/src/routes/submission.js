@@ -4,7 +4,7 @@ const submissionController = require("../controllers/submissionController");
 const checkToken = require("../helpers/checkToken");
 const checkAdmin = require("../helpers/checkAdmin");
 
-router.get("/", async (req, res, next) => {
+router.get("/", checkToken.checkTokenBearer, async (req, res, next) => {
   try {
     const submission = await submissionController.getAllSubmission();
     return res.status(200).json({
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const submissionId = req.params.id;
   try {
     const submission = await submissionController.getsubmissionById(

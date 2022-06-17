@@ -4,7 +4,7 @@ const quizController = require("../controllers/quizController");
 const checkToken = require("../helpers/checkToken");
 const checkAdmin = require("../helpers/checkAdmin");
 
-router.get("/", async (req, res, next) => {
+router.get("/", checkToken.checkTokenBearer, async (req, res, next) => {
   try {
     const quizzes = await quizController.getAllQuizzes();
     return res.status(200).json({
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const quizId = req.params.id;
   try {
     const quiz = await quizController.getQuizById(quizId);
@@ -52,18 +52,23 @@ router.post(
   }
 );
 
-router.put("/:id", async (req, res, next) => {
-  try {
-    const { description } = req.body;
-    const quiz = await quizController.updateQuiz(req.params.id, description);
-    return res.status(200).json({
-      quiz,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      validationError: err,
-    });
+router.put(
+  "/:id",
+  checkToken.checkTokenBearer,
+  checkAdmin.checkAdmin,
+  async (req, res, next) => {
+    try {
+      const { description } = req.body;
+      const quiz = await quizController.updateQuiz(req.params.id, description);
+      return res.status(200).json({
+        quiz,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        validationError: err,
+      });
+    }
   }
-});
+);
 
 module.exports = router;
