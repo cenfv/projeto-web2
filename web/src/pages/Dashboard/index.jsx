@@ -78,6 +78,9 @@ export function Dashboard() {
     handleLoadUserSubmissionsByUserId();
   }, [page]);
   useEffect(() => {
+    handleLoadUserSubmissionsByUserId();
+  }, [selectedFilter]);
+  useEffect(() => {
     handleLoadUserStatistics();
   }, []);
   const filteredFilter =
