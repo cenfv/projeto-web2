@@ -404,8 +404,13 @@ export function Question() {
             <div className="grid grid-cols-2 gap-5">
               <div className="flex justify-end">
                 <button
+                  disabled={
+                    Object.keys(selectedQuiz).length === 0 ||
+                    Object.keys(selectedDifficulty).length === 0 ||
+                    Object.keys(selectedQuestion).length === 0
+                  }
                   onClick={() => handleSubmit()}
-                  className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-2 text-center drop-shadow-lg mt-10 hover:bg-indigo-600 mb-5"
+                  className="w-36 bg-indigo-500 text-white font-medium rounded-lg py-2 text-center drop-shadow-lg mt-10 hover:bg-indigo-600 mb-5 disabled:opacity-75"
                 >
                   Iniciar
                 </button>
