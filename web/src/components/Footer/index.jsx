@@ -4,10 +4,10 @@ export function Footer() {
       <div className="flex justify-between">
         <p>
           <a
-            href="http://www.utfpr.edu.br"
+            href="/"
             className="font-medium text-gray-500 hover:text-indigo-600"
           >
-            Universidade Tecnológica Federal do Paraná
+            Solve It.
           </a>
         </p>
         <p>© All rights reserved.</p>

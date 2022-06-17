@@ -5,9 +5,10 @@ import { Popover, Transition } from "@headlessui/react";
 import { CogIcon, LogoutIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
+import logo from "../../assets/logoH.png";
 
 export function DashboardNavBar({ text }) {
-  const { name, isLogged } = useSelector(selectUser);
+  const { name } = useSelector(selectUser);
   const dispatch = useDispatch();
 
   return (
@@ -17,8 +18,8 @@ export function DashboardNavBar({ text }) {
           <div className="flex items-center space-x-10">
             <Link to="/">
               <img
-                className="h-8 w-auto sm:h-10"
-                src="http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/efcf9caf-6d29-4c24-8266-0b7366ea3a40.png"
+                className="h-12 w-auto"
+                src={logo}
                 alt="logo"
               />
             </Link>
