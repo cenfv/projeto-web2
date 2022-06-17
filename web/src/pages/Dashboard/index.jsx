@@ -12,7 +12,7 @@ export function Dashboard() {
   const filter = [
     {
       id: 0,
-      description: "Questões realizadas",
+      description: "Questões finalizadas",
     },
     {
       id: 1,

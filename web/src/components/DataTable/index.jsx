@@ -26,26 +26,26 @@ export function DataTable({ data }) {
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200 ">
-            {data.length > 0 &&
-              data[0].data.map((submission, index) => (
+            {data?.length > 0 &&
+              data[0]?.data.map((submission, index) => (
                 <tr
                   className="text-center hover:bg-gray-100"
-                  key={submission._id}
+                  key={submission?._id}
                 >
                   <td className="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap center">
-                    {submission.questionAlternative?.question[0]._id}
+                    {submission?.questionAlternative?.question[0]._id}
                   </td>
                   <td className="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap center">
-                    {submission.questionAlternative?.question[0].title}
+                    {submission?.questionAlternative?.question[0].title}
                   </td>
                   <td className="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap center">
-                    {submission.submissionDate}
+                    {submission?.submissionDate}
                   </td>
                   <td className="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap center">
-                    {submission.questionAlternative?.question[0].editionYear}
+                    {submission?.questionAlternative?.question[0].editionYear}
                   </td>
                   <td className="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap center">
-                    {submission.questionAlternative?.question[0].difficulty}
+                    {submission?.questionAlternative?.question[0].difficulty}
                   </td>
                 </tr>
               ))}
