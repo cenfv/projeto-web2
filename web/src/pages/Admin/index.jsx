@@ -6,6 +6,7 @@ import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import Axios from "axios";
 import { useEffect } from "react";
 import { DataTable } from "../../components/DataTable";
+import { useNavigate } from "react-router-dom";
 
 export function Admin() {
   const [selectedUser, setSelectedUser] = useState({});
@@ -14,7 +15,28 @@ export function Admin() {
   const [queryUser, setQueryUser] = useState("");
   const [page, setPage] = useState(1);
   const [userSubmissionData, setUserSubmissionData] = useState({});
-
+  let navigate = useNavigate();
+  const handleGetUserPermission = async () => {
+    return await Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
+      headers: {
+        authorization: localStorage.getItem("authorization"),
+      },
+    })
+      .then((response) => {
+        console.log("chegou");
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          console.log(response.data.user.role);
+          if (response.data.user.role === 0) {
+            navigate("/dashboard");
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  handleGetUserPermission();
   const filteredUser =
     queryUser === ""
       ? users

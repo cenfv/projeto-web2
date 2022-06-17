@@ -16,6 +16,7 @@ import {
   LoggedUserRedirect,
 } from "./components/ProtectedRoutes";
 import { UserProfile } from "./pages/UserProfile";
+
 function App() {
   return (
     <BrowserRouter>
@@ -31,9 +32,9 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/add-content" element={<AddContent />} />
           <Route path="/question" element={<Question />} />
           <Route path="/question/:id" element={<QuestionContent />} />
+          <Route path="/add-content" element={<AddContent />} />
           <Route path="/admin" element={<Admin />} />
         </Route>
       </Routes>

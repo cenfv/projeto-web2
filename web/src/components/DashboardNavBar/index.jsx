@@ -23,10 +23,10 @@ export function DashboardNavBar({ text }) {
       },
     })
       .then((response) => {
+        console.log("chegou");
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setUser(response.data.user);
-          console.log("user" + response.data.user);
           return true;
         }
       })
