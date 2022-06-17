@@ -78,3 +78,9 @@ exports.getUserById = async (id) => {
     return user;
   }
 };
+exports.getAllUser = async () => {
+  const user = await User.find();
+  if (user) {
+    return user;
+  }
+};
