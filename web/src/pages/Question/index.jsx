@@ -251,7 +251,7 @@ export function Question() {
                 >
                   <div className="z-10 mt-3 rounded-lg bg-white text-left drop-shadow-lg focus:outline-none">
                     <Combobox.Input
-                      placeholder="Selecione a questão"
+                      placeholder="Selecione a dificuldade"
                       className="border-none p-4 text-gray-900 focus:outline-none"
                       displayValue={(difficulty) => difficulty.description}
                       onChange={(event) =>
