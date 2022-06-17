@@ -17,6 +17,9 @@ const handleErrors = (err) => {
 exports.createUser = async (firstName, lastName, email, password, gender) => {
   try {
     let passwordHash = "";
+    const salt = await bcrypt.genSalt(10);
+    passwordHash = await bcrypt.hash(password, salt);
+    console.log(passwordHash);
     if (password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       passwordHash = await bcrypt.hash(password, salt);

@@ -5,11 +5,38 @@ import { Popover, Transition } from "@headlessui/react";
 import { CogIcon, LogoutIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import Axios from "axios";
 
 export function DashboardNavBar({ text }) {
+  const [loading, setLoading] = useState(false);
   const { name, isLogged } = useSelector(selectUser);
+  const [user, setUser] = useState({});
   const dispatch = useDispatch();
 
+  const handleGetUserPermission = async () => {
+    setLoading(true);
+    return Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
+      headers: {
+        authorization: localStorage.getItem("authorization"),
+      },
+    })
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setUser(response.data.user);
+          console.log("user" + response.data.user);
+          return true;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    handleGetUserPermission();
+  }, []);
   return (
     <div className="border-b-2 bg-white  border-gray-100">
       <div className=" py-5 items-center justify-center max-w-6xl mx-auto ">
@@ -34,18 +61,22 @@ export function DashboardNavBar({ text }) {
             >
               Questões
             </Link>
-            <Link
-              to="/add-content"
-              className="font-medium text-gray-500 hover:text-indigo-600"
-            >
-              Editar provas
-            </Link>
-            <Link
-              to="/admin"
-              className="font-medium text-gray-500 hover:text-indigo-600"
-            >
-              Admin
-            </Link>
+            {user?.role === 1 && (
+              <>
+                <Link
+                  to="/add-content"
+                  className="font-medium text-gray-500 hover:text-indigo-600"
+                >
+                  Editar provas
+                </Link>
+                <Link
+                  to="/admin"
+                  className="font-medium text-gray-500 hover:text-indigo-600"
+                >
+                  Admin
+                </Link>
+              </>
+            )}
           </div>
 
           <div className="flex space-x-10 items-center">

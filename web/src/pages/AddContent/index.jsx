@@ -64,9 +64,17 @@ export function AddContent() {
 
   const handleCreateTest = async () => {
     setLoading(true);
-    return Axios.post(`${process.env.REACT_APP_API_URL}/quiz`, {
-      description: testDescription.description,
-    }).then((response) => {
+    return Axios.post(
+      `${process.env.REACT_APP_API_URL}/quiz`,
+      {
+        description: testDescription.description,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem("authorization"),
+        },
+      }
+    ).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
         alert("cadastrado com sucesso");

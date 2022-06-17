@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const quizController = require("../controllers/quizController");
+const checkToken = require("../helpers/checkToken");
+const checkAdmin = require("../helpers/checkAdmin");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -31,19 +33,24 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  const { description } = req.body;
-  try {
-    const quiz = await quizController.createQuiz(description);
-    return res.status(201).json({
-      quiz,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      validationError: err,
-    });
+router.post(
+  "/",
+  checkToken.checkTokenBearer,
+  checkAdmin.checkAdmin,
+  async (req, res, next) => {
+    const { description } = req.body;
+    try {
+      const quiz = await quizController.createQuiz(description);
+      return res.status(201).json({
+        quiz,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        validationError: err,
+      });
+    }
   }
-});
+);
 
 router.put("/:id", async (req, res, next) => {
   try {
