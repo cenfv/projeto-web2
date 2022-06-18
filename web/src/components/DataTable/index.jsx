@@ -1,5 +1,4 @@
 export function DataTable({ data }) {
-  console.log(data);
 
   return (
     <div className=" shadow-md my-6 items-center justify-center max-w-6xl mx-auto ">

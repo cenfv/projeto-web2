@@ -34,9 +34,7 @@ export function Dashboard() {
   const handleLoadUserSubmissionsByUserId = async () => {
     setLoading(true);
     let string;
-    console.log(selectedFilter.id);
     if (selectedFilter.id === 0) {
-      console.log("entrou");
       string = "&correctOnly=true";
     }
     Axios.get(

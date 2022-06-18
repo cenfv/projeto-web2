@@ -21,9 +21,7 @@ exports.getAllSubmission = async () => {
 };
 exports.getSubmissionByUserId = async (userId, page, pageSize) => {
   try {
-    console.log(userId);
     const user = await User.findById(userId);
-    console.log(user);
     const submission = await Submission.aggregate([
       {
         $match: { user: user._id },
@@ -151,7 +149,6 @@ exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
       });
     }
     const res = await submission.save();
-    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
@@ -203,12 +200,7 @@ exports.getSubmissionStatistics = async (userId) => {
 
     let remainingQuestions = questionsQuantity - solvedQuantity[0]?.total;
 
-    console.log(!progressRate);
-    console.log(!correctSubmissionRate);
-    console.log(!solvedQuantity);
-    console.log(!remainingQuestions);
     if (!progressRate || !correctSubmissionRate || !solvedQuantity[0].total) {
-      console.log("vix");
       return {
         progressRate: 0,
         correctSubmissionRate: 0,
