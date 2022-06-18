@@ -77,8 +77,8 @@ export function QuestionContent() {
     } else if (correctAnswer.correct === false && correctAnswer.id !== null) {
       return (
         <div className="flex flex-row font-semibold">
-          <p className="text-red-500 font-bold">Oh não</p>
-          <span>, que pena, tente novamente!</span>
+          <p className="text-red-500 font-bold">Que pena!</p>
+          <span>&nbsp; Você errou, tente novamente!</span>
         </div>
       );
     }
@@ -96,8 +96,9 @@ export function QuestionContent() {
           <div className="min-h-screen">
             <DashboardNavBar />
             <div className="max-w-6xl mx-auto">
-              <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl"></h1>
+              <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl">
               {questionAlternative.question?.title}
+              </h1>
               <h5 className="mt-5 text-lg text-justify font-medium">
                 Ano: {questionAlternative.question?.editionYear} | Nível:{" "}
                 {questionAlternative.question?.difficulty}
@@ -135,8 +136,9 @@ export function QuestionContent() {
                     </button>
                   );
                 })}
-                <div>{handleDisplayAnswer()}</div>
+                
               </div>
+              <div className="flex justify-center mt-5">{handleDisplayAnswer()}</div>
               <div className="grid grid-cols-2">
                 <div className="flex justify-start mt-5 text-lg">
                   <button>{"< "}Anterior</button>
