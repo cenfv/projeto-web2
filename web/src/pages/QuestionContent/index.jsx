@@ -137,7 +137,7 @@ export function QuestionContent() {
             <DashboardNavBar />
             <div className="max-w-6xl mx-auto">
               <h1 className="mt-5 text-3xl font-bold text-gray-900 sm:text-4xl">
-              {questionAlternative.question?.title}
+                {questionAlternative.question?.title}
               </h1>
               <h5 className="mt-5 text-lg text-justify font-medium">
                 Ano: {questionAlternative.question?.editionYear} | Nível:{" "}
@@ -176,9 +176,10 @@ export function QuestionContent() {
                     </button>
                   );
                 })}
-                
               </div>
-              <div className="flex justify-center mt-5">{handleDisplayAnswer()}</div>
+              <div className="flex justify-center mt-16">
+                {handleDisplayAnswer()}
+              </div>
               <div className="grid grid-cols-2">
                 <div className="flex justify-start mt-5 text-lg">
                   <button
