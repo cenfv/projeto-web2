@@ -95,7 +95,6 @@ export function Admin() {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setUserSubmissionData(response.data.submission);
-          console.log(response.data.submission);
         }
       })
       .catch((err) => {

@@ -67,7 +67,6 @@ router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   }
   try {
     if (correctOnly === "true") {
-      console.log("true");
       const submission =
         await submissionController.getCorrectSubmissionByUserId(
           targetId,

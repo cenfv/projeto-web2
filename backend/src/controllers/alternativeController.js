@@ -26,9 +26,6 @@ exports.getAlternativeById = async (id) => {
 
 exports.createAlternative = async (alternative) => {
   try {
-    alternative.map((alternative) => {
-      console.log(alternative);
-    });
     const res = Alternative.insertMany(alternative);
     return res;
   } catch (err) {

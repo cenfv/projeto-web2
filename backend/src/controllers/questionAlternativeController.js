@@ -32,7 +32,6 @@ exports.getQuestionAlternativeByQuestionId = async (questionId) => {
     .populate("correctAlternative")
     .populate("question");
 
-  console.log(questionAlternative);
   if (questionAlternative) {
     return questionAlternative;
   }

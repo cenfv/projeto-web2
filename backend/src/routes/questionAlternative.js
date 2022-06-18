@@ -60,7 +60,6 @@ router.get("/question/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   const { question, alternative, correctAlternative } = req.body;
-  console.log("alt:" + alternative);
   try {
     const questionAlternative =
       await questionAlternativeController.createQuestionAlternative(

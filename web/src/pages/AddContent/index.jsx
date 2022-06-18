@@ -7,7 +7,6 @@ import Axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { useEffect } from "react";
 
 export function AddContent() {
   const [loading, setLoading] = useState(false);
@@ -56,10 +55,8 @@ export function AddContent() {
       },
     })
       .then((response) => {
-        console.log("chegou");
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
-          console.log(response.data.user.role);
           if (response.data.user.role === 0) {
             navigate("/dashboard");
           }
@@ -99,7 +96,6 @@ export function AddContent() {
     ).then((response) => {
       setLoading(false);
       if (response.status === 201 && response.statusText === "Created") {
-        alert("cadastrado com sucesso");
         return true;
       }
     });
@@ -147,7 +143,6 @@ export function AddContent() {
       .then((response) => {
         setLoading(false);
         if (response.status === 201 && response.statusText === "Created") {
-          alert("cadastrado com sucesso");
           return response.data;
         }
         return null;
@@ -180,8 +175,6 @@ export function AddContent() {
       .then((response) => {
         setLoading(false);
         if (response.status === 201 && response.statusText === "Created") {
-          alert("cadastrado com sucesso");
-          console.log(response);
           return true;
         }
       })
@@ -205,8 +198,6 @@ export function AddContent() {
         },
       }
     ).then((response) => {
-      alert("cadastrado com sucesso");
-      console.log(response);
       return true;
     });
   };
