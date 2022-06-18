@@ -256,7 +256,7 @@ export function AddContent() {
       });
       setTimeout(() => {
         navigate("/question");
-      }, 2000);
+      }, 800);
     }
   };
 
@@ -305,7 +305,7 @@ export function AddContent() {
       });
       setTimeout(() => {
         navigate("/question");
-      }, 2000);
+      }, 800);
     }
   };
   async function quizValidate() {
@@ -435,14 +435,14 @@ export function AddContent() {
                 ></input>
               </div>
               {statusQuiz.type === "success" ? (
-                <p className="text-center mt-5 text-green-500 text-lg font-bold">
+                <p className="text-center mt-10 text-green-500">
                   {statusQuiz.message}
                 </p>
               ) : (
                 ""
               )}
               {statusQuiz.type === "error" ? (
-                <p className="text-center mt-5 text-red-600">
+                <p className="text-center mt-10 text-red-600">
                   {statusQuiz.message}
                 </p>
               ) : (
@@ -750,14 +750,14 @@ export function AddContent() {
                 </div>
               </div>
               {statusQuestion.type === "success" ? (
-                <p className="text-center mt-5 text-green-500 text-lg font-bold">
+                <p className="text-center mt-10 text-green-500">
                   {statusQuestion.message}
                 </p>
               ) : (
                 ""
               )}
               {statusQuestion.type === "error" ? (
-                <p className="text-center mt-5 text-red-600">
+                <p className="text-center mt-10 text-red-600">
                   {statusQuestion.message}
                 </p>
               ) : (

@@ -21,9 +21,9 @@ const features = [
     icon: CashIcon,
   },
   {
-    name: "Leaderboard",
+    name: "Desempenho",
     description:
-      "Analise e compare o seu desempenho com os demais usuários que utilizam a plataforma.",
+      "Analise o seu desempenho e as suas estatísticas detalhadas através do seu dashboard, para que você possa acompanhar a sua evolução!",
     icon: GlobeIcon,
   },
   {

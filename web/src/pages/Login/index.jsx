@@ -78,7 +78,7 @@ export function Login() {
       });
       setTimeout(() => {
         navigate("/dashboard");
-      }, 2000);
+      }, 1000);
     }
   };
 
