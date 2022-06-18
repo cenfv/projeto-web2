@@ -2,7 +2,7 @@ import { Footer } from "../../components/Footer";
 import { DashboardNavBar } from "../../components/DashboardNavBar";
 import { NotFound } from "../../components/NotFound";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useEffect } from "react";
 
@@ -11,10 +11,13 @@ export function QuestionContent() {
   const [loading, setLoading] = useState(false);
   const [questionAlternative, setQuestionAlternative] = useState({});
   const [notFound, setNotFound] = useState(false);
+  const [test, setTest] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState({
     id: null,
     correct: false,
   });
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleLoadQuestion = async () => {
     setLoading(true);
     Axios.get(
@@ -85,8 +88,45 @@ export function QuestionContent() {
   };
   useEffect(() => {
     handleLoadQuestion();
-  }, []);
+    setCorrectAnswer({
+      id: null,
+      correct: false,
+    });
+  }, [test]);
 
+  const handlePrevious = () => {
+    let pos;
+    location.state.questions.map((question, index) => {
+      if (question._id === id) {
+        pos = index;
+      }
+    });
+    const next = pos - 1;
+    const nextId = location.state.questions[next]._id;
+    const questions = location.state.questions;
+
+    handleChangeQuestion(questions, nextId);
+  };
+
+  const handleNext = () => {
+    let pos;
+    location.state.questions.map((question, index) => {
+      if (question._id === id) {
+        pos = index;
+      }
+    });
+    const next = pos + 1;
+    const nextId = location.state.questions[next]._id;
+    const questions = location.state.questions;
+
+    handleChangeQuestion(questions, nextId);
+  };
+  const handleChangeQuestion = (questions, nextId) => {
+    navigate(`/question/${nextId}`, {
+      state: { questions },
+    });
+    setTest(!test);
+  };
   return (
     <>
       {notFound ? (
@@ -139,10 +179,22 @@ export function QuestionContent() {
               </div>
               <div className="grid grid-cols-2">
                 <div className="flex justify-start mt-5 text-lg">
-                  <button>{"< "}Anterior</button>
+                  <button
+                    onClick={() => {
+                      handlePrevious();
+                    }}
+                  >
+                    {"< "}Anterior
+                  </button>
                 </div>
                 <div className="flex justify-end mt-5 text-lg">
-                  <button>Próxima{" >"}</button>
+                  <button
+                    onClick={async () => {
+                      handleNext();
+                    }}
+                  >
+                    Próxima{" >"}
+                  </button>
                 </div>
               </div>
             </div>

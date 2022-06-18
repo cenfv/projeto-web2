@@ -121,7 +121,10 @@ export function Question() {
   };
 
   const handleSubmit = async () => {
-    navigate(`/question/${selectedQuestion._id}`);
+    console.log(questions);
+    navigate(`/question/${selectedQuestion._id}`, {
+      state: { questions },
+    });
   };
   useEffect(() => {
     handleLoadQuiz();
