@@ -4,36 +4,46 @@ const submissionController = require("../controllers/submissionController");
 const checkToken = require("../helpers/checkToken");
 const checkAdmin = require("../helpers/checkAdmin");
 
-router.get("/", checkToken.checkTokenBearer, async (req, res, next) => {
-  try {
-    const submission = await submissionController.getAllSubmission();
-    return res.status(200).json({
-      submission,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(404).json({
-      msg: "Submission not found",
-    });
+router.get(
+  "/",
+  checkToken.checkTokenBearer,
+  checkAdmin.checkAdmin,
+  async (req, res, next) => {
+    try {
+      const submission = await submissionController.getAllSubmission();
+      return res.status(200).json({
+        submission,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(404).json({
+        msg: "Submission not found",
+      });
+    }
   }
-});
+);
 
-router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
-  const submissionId = req.params.id;
-  try {
-    const submission = await submissionController.getsubmissionById(
-      submissionId
-    );
-    return res.status(200).json({
-      submission,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(404).json({
-      msg: "Submission not found",
-    });
+router.get(
+  "/:id",
+  checkToken.checkTokenBearer,
+  checkAdmin.checkAdmin,
+  async (req, res, next) => {
+    const submissionId = req.params.id;
+    try {
+      const submission = await submissionController.getSubmissionById(
+        submissionId
+      );
+      return res.status(200).json({
+        submission,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(404).json({
+        msg: "Submission not found",
+      });
+    }
   }
-});
+);
 
 router.post("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const questionAlternative = req.params.id;
@@ -54,6 +64,7 @@ router.post("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
     });
   }
 });
+
 router.get("/user/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   const targetId = req.params.id;
   const page = parseInt(req.query.page);
@@ -99,8 +110,8 @@ router.get(
   checkToken.checkTokenBearer,
   async (req, res, next) => {
     const targetId = req.params.id;
-
-    if (targetId != req.id) {
+    const admin = await checkAdmin.checkAdmin(req, res);
+    if (targetId != req.id && !admin) {
       return res.status(404).json({
         msg: "User not authenticated",
       });

@@ -36,7 +36,14 @@ router.post("/", async (req, res, next) => {
     return res.status(200).json({
       msg: "user authenticated successfully",
       token: token,
-      user: user,
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        gender: user.gender,
+        role: user.role,
+      },
     });
   } catch (err) {
     console.log(err);

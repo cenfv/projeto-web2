@@ -19,6 +19,12 @@ exports.getAllSubmission = async () => {
     return submission;
   }
 };
+exports.getSubmissionById = async (id) => {
+  const submission = await Submission.findById(id);
+  if (submission) {
+    return submission;
+  }
+};
 exports.getSubmissionByUserId = async (userId, page, pageSize) => {
   try {
     const user = await User.findById(userId);
@@ -111,12 +117,7 @@ exports.getCorrectSubmissionByUserId = async (userId, page, pageSize) => {
     console.log(err);
   }
 };
-exports.getSubmissionById = async (id) => {
-  const submission = await Submission.findById(id);
-  if (submission) {
-    return submission;
-  }
-};
+
 exports.createSubmission = async (userId, questionAlternativeId, choiceId) => {
   try {
     const user = await User.findById(userId, {

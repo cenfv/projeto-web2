@@ -99,6 +99,11 @@ router.patch(
     try {
       const questionId = req.params.id;
       const question = await questionController.getQuestionById(questionId);
+      if (!req.file) {
+        return res.status(400).json({
+          msg: "No file uploaded",
+        });
+      }
       if (question) {
         const image = await questionController.createImage(
           questionId,
