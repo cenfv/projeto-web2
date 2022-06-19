@@ -16,6 +16,9 @@ var submissionRouter = require("./src/routes/submission");
 
 var app = express();
 var mongodbConnection = require("./src/database/mongodb/mongodb-connection");
+var swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerFile = YAML.load("./src/swagger.yaml");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -29,6 +32,7 @@ app.use(cors());
 app.use("/files", express.static(path.resolve(__dirname, "uploads", "images")));
 mongodbConnection();
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);

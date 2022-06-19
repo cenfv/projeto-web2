@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: SolveIt Documentation
+  description: SolveIt API documentation
+  contact:
+    email: carlos.251099@alunos.utfpr.edu.br
+consumes:
+  - multipart/form-data
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /auth:
+    post:
+      tags: [auth]
+      summary: Authenticate a user
+      description: Authenticate a user and return their token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: admin@admin.com
+                password:
+                  type: string
+                  example: werty123
+
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: Bad Request,
+        "404":
+          description: User not authenticated,
+    get:
+      security:
+        - bearerAuth: []
+      tags: [auth]
+      summary: get the user information through the token
+      description: get the user information through the token (for learning and tests purposes only)
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /user:
+    post:
+      tags: [user]
+      summary: Create a user
+      description: Create a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Carlos
+                lastName:
+                  type: string
+                  example: Freitas
+                email:
+                  type: string
+                  example: carlos.251099@alunos.utfpr.edu.br
+                password:
+                  type: string
+                  example: werty1234
+                gender:
+                  type: string
+                  example: masculino
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request, o email fornecido já se encontra cadastrado, Por favor, digite um nome, Por favor, digite o último nome, Por favor, digite seu email, Por favor, insira um email válido, Por favor, entre com uma senha de no mínimo 6 caracteres, Por favor selecione uma opção de gênero
+
+    get:
+      security:
+        - bearerAuth: []
+      tags: [user]
+      summary: List all users
+      description: List all users
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /user/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [user]
+      summary: Get user by id
+      description: Get user by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the user to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+    put:
+      security:
+        - bearerAuth: []
+      tags: [user]
+      summary: Update a user
+      description: Update a user
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the user to put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Carlos
+                lastName:
+                  type: string
+                  example: Freitas
+                password:
+                  type: string
+                  example: werty1234
+                gender:
+                  type: string
+                  example: masculino
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request, o email fornecido já se encontra cadastrado, Por favor, digite um nome, Por favor, digite o último nome, Por favor, digite seu email, Por favor, insira um email válido, Por favor, entre com uma senha de no mínimo 6 caracteres, Por favor selecione uma opção de gênero
+
+  /quiz:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [quiz]
+      summary: Create a quiz
+      description: Create a quiz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: Enem
+
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request, Por favor, insira uma descrição
+    get:
+      security:
+        - bearerAuth: []
+      tags: [quiz]
+      summary: List all quizzes
+      description: List all quizzes
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /quiz/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [quiz]
+      summary: Get quiz by id
+      description: Get quiz by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the quiz to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+    put:
+      security:
+        - bearerAuth: []
+      tags: [quiz]
+      summary: Update a quiz
+      description: Update a quiz
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the quiz to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: Enem
+
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request, Por favor, insira uma descrição
+
+  /question:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [question]
+      summary: Create a question
+      description: Create a question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Questão número 1
+                description:
+                  type: string
+                  example: Selecione a alternativa correta
+                difficulty:
+                  type: integer
+                  example: 0
+                editionYear:
+                  type: string
+                  example: 2022
+                quiz:
+                  type: string
+                  example: Quiz Id, "62ad0959f475d7911337b5c7", por exemplo
+
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request, Por favor, insira um titulo , Por favor, insira uma descrição
+    get:
+      security:
+        - bearerAuth: []
+      tags: [question]
+      summary: List all questions
+      description: List all questions
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /question/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [question]
+      summary: Get question by id
+      description: Get question by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the question to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /question/{id}/image:
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [question]
+      summary: update the image of a question.
+      description: update the image of a question
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                img:
+                  type: string
+                  format: binary
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the question to get
+
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /alternative:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [alternative]
+      summary: Create a alternative
+      description: Create a alternative
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alternatives:
+                  example:
+                    [
+                      { "description": "Alternativa 1" },
+                      { "description": "Alternativa 2" },
+                      { "description": "Alternativa 3" },
+                      { "description": "Alternativa 4" },
+                    ]
+
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+    get:
+      security:
+        - bearerAuth: []
+      tags: [alternative]
+      summary: List all alternatives
+      description: List all alternatives
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /alternative/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [alternative]
+      summary: Get alternative by id
+      description: Get alternative by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the alternative to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /question-alternative:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [questionAlternative]
+      summary: Create a question-alternative
+      description: Create a question-alternative
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  example: id of question, example "62a2f80e938526ea640b0476"
+                alternative:
+                  type: string
+                  example: alternatives id array example ["62a2fa44938526ea640b047c","62a2fa48938526ea640b047e","62a2fa4d938526ea640b0480", "62a2fa54938526ea640b0482"]
+                correctAlternative:
+                  type: string
+                  example: "62a2fa44938526ea640b047c"
+
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+    get:
+      security:
+        - bearerAuth: []
+      tags: [questionAlternative]
+      summary: List all question-alternatives
+      description: List all question-alternatives
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /question-alternative/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [questionAlternative]
+      summary: Get question-alternatives by id
+      description: Get question-alternatives by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the question-alternatives to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated
+
+  /submission:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [submission]
+      summary: Get all Submissions
+      description: Get all Submissions (admin only)
+
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated, The user is not an administrator
+
+  /submission/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [submission]
+      summary: Get Submission by id
+      description: Get Submission by id (admin only)
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the submission to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated, The user is not an administrator
+
+    post:
+      security:
+        - bearerAuth: []
+      tags: [submission]
+      summary: Create a submission
+      description: Create a submission
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the question-alternative
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                choice:
+                  type: string
+                  example: Alternative Id, ex "62a91c4046475990320cdbb8", (needs to be contained in the question-alternative)
+
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request, Por favor, insira um titulo , Por favor, insira uma descrição
+
+  /submission/user/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [submission]
+      summary: Get user submissions by user id
+      description: Get Submission by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the user to get
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Number of records that will be returned
+        - in: query
+          name: correctOnly
+          schema:
+            type: boolean
+          description: true for correct submissions or false for all submissions
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated, The user is not an administrator
+
+  /submission/user/{id}/statistics:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [submission]
+      summary: Get user statistics by user id
+      description: Get statistics by user id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: String ID of the user to get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: User not authenticated, The user is not an administrator
