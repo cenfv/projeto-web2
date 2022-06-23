@@ -13,23 +13,31 @@ const handleErrors = (err) => {
 };
 
 exports.getAllQuestionAlternative = async () => {
-  const questionAlternative = await QuestionAlternative.find();
+  const questionAlternative = await QuestionAlternative.find(
+    {},
+    "-correctAlternative"
+  );
   if (questionAlternative) {
     return questionAlternative;
   }
 };
 exports.getQuestionAlternativeById = async (id) => {
-  const questionAlternative = await QuestionAlternative.findById(id);
+  const questionAlternative = await QuestionAlternative.findById(
+    id,
+    "-correctAlternative"
+  );
   if (questionAlternative) {
     return questionAlternative;
   }
 };
 exports.getQuestionAlternativeByQuestionId = async (questionId) => {
-  const questionAlternative = await QuestionAlternative.find({
-    question: questionId,
-  })
+  const questionAlternative = await QuestionAlternative.find(
+    {
+      question: questionId,
+    },
+    "-correctAlternative"
+  )
     .populate("alternative")
-    .populate("correctAlternative")
     .populate("question");
 
   if (questionAlternative) {
