@@ -49,11 +49,10 @@ export function AddContent() {
   });
 
   const handleGetUserPermission = async () => {
-    return await Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    })
+    const authorization = localStorage.getItem("authorization");
+    return await Axios.get(
+      `${process.env.REACT_APP_API_URL}/auth?token=${authorization}`
+    )
       .then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -69,11 +68,10 @@ export function AddContent() {
   handleGetUserPermission();
   const handleLoadQuiz = async () => {
     setLoading(true);
-    Axios.get(`${process.env.REACT_APP_API_URL}/quiz`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    }).then((response) => {
+    const authorization = localStorage.getItem("authorization");
+    Axios.get(
+      `${process.env.REACT_APP_API_URL}/quiz?token=${authorization}`
+    ).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setQuizzes(response.data.quizzes);
@@ -83,15 +81,11 @@ export function AddContent() {
 
   const handleCreateTest = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     return Axios.post(
-      `${process.env.REACT_APP_API_URL}/quiz`,
+      `${process.env.REACT_APP_API_URL}/quiz?token=${authorization}`,
       {
         description: testDescription.description,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     ).then((response) => {
       setLoading(false);
@@ -103,20 +97,15 @@ export function AddContent() {
 
   const handleCreateQuestion = async () => {
     setLoading(true);
-
+    const authorization = localStorage.getItem("authorization");
     return Axios.post(
-      `${process.env.REACT_APP_API_URL}/question`,
+      `${process.env.REACT_APP_API_URL}/question?token=${authorization}`,
       {
         title: question.title,
         description: question.description,
         editionYear: question.editionYear,
         quiz: selectedTest._id,
         difficulty: question.difficulty,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     ).then((response) => {
       setLoading(false);
@@ -129,15 +118,11 @@ export function AddContent() {
 
   const handleCreateAlternative = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     return Axios.post(
-      `${process.env.REACT_APP_API_URL}/alternative`,
+      `${process.env.REACT_APP_API_URL}/alternative?token=${authorization}`,
       {
         alternatives: answers,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     )
       .then((response) => {
@@ -157,19 +142,14 @@ export function AddContent() {
     const aux = alternative.alternative.map((alt) => {
       return alt._id;
     });
-
+    const authorization = localStorage.getItem("authorization");
     return Axios.post(
-      `${process.env.REACT_APP_API_URL}/question-alternative`,
+      `${process.env.REACT_APP_API_URL}/question-alternative?token=${authorization}`,
       {
         question: question._id,
         alternative: aux,
         correctAlternative: alternative.alternative.at(selectedAlternative.id)
           ._id,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     )
       .then((response) => {
@@ -187,8 +167,9 @@ export function AddContent() {
     let data = new FormData();
     data.append("img", selectedImg, selectedImg.name);
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     Axios.patch(
-      `${process.env.REACT_APP_API_URL}/question/${question._id}/image`,
+      `${process.env.REACT_APP_API_URL}/question/${question._id}/image?token=${authorization}`,
       data,
       {
         headers: {

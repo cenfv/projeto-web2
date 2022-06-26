@@ -3,8 +3,19 @@ const router = express.Router();
 const alternativeController = require("../controllers/alternativeController");
 const checkToken = require("../helpers/checkToken");
 const checkAdmin = require("../helpers/checkAdmin");
+const checkTokenQueryParam = require("../helpers/checkTokenQueryParam");
 
-router.get("/", checkToken.checkTokenBearer, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
+  const token = req.query.token;
+  const tokenRes = checkTokenQueryParam.checkTokenQueryParam(token);
+
+  if (tokenRes === false) {
+    return res
+      .status(401)
+      .json({ msg: "User not authenticated", redirect_url: "/login" });
+  } else {
+    req.id = tokenRes;
+  }
   try {
     const alternatives = await alternativeController.getAllAlternatives();
     return res.status(200).json({
@@ -18,7 +29,16 @@ router.get("/", checkToken.checkTokenBearer, async (req, res, next) => {
   }
 });
 
-router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
+  const token = req.query.token;
+  const tokenRes = checkTokenQueryParam.checkTokenQueryParam(token);
+  if (tokenRes === false) {
+    return res
+      .status(401)
+      .json({ msg: "User not authenticated", redirect_url: "/login" });
+  } else {
+    req.id = tokenRes;
+  }
   const alternativeId = req.params.id;
   try {
     const alternative = await alternativeController.getAlternativeById(
@@ -35,25 +55,31 @@ router.get("/:id", checkToken.checkTokenBearer, async (req, res, next) => {
   }
 });
 
-router.post(
-  "/",
-  checkToken.checkTokenBearer,
-  checkAdmin.checkAdmin,
-  async (req, res, next) => {
-    const alternatives = req.body.alternatives;
-    try {
-      const alternative = await alternativeController.createAlternative(
-        alternatives
-      );
-      return res.status(201).json({
-        alternative,
-      });
-    } catch (err) {
-      return res.status(400).json({
-        validationError: err,
-      });
-    }
+router.post("/", async (req, res, next) => {
+  const token = req.query.token;
+  const tokenRes = checkTokenQueryParam.checkTokenQueryParam(token);
+
+  if (tokenRes === false) {
+    return res
+      .status(401)
+      .json({ msg: "User not authenticated", redirect_url: "/login" });
+  } else {
+    req.id = tokenRes;
   }
-);
+  const admin = await checkAdmin.checkAdmin(req, res);
+  const alternatives = req.body.alternatives;
+  try {
+    const alternative = await alternativeController.createAlternative(
+      alternatives
+    );
+    return res.status(201).json({
+      alternative,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      validationError: err,
+    });
+  }
+});
 
 module.exports = router;

@@ -33,17 +33,13 @@ export function Dashboard() {
   });
   const handleLoadUserSubmissionsByUserId = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     let string;
     if (selectedFilter.id === 0) {
       string = "&correctOnly=true";
     }
     Axios.get(
-      `${process.env.REACT_APP_API_URL}/submission/user/${id}?page=${page}&limit=10${string}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }
+      `${process.env.REACT_APP_API_URL}/submission/user/${id}?page=${page}&limit=10${string}?token=${authorization}`
     )
       .then((response) => {
         setLoading(false);
@@ -57,13 +53,9 @@ export function Dashboard() {
   };
   const handleLoadUserStatistics = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     Axios.get(
-      `${process.env.REACT_APP_API_URL}/submission/user/${id}/statistics`,
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }
+      `${process.env.REACT_APP_API_URL}/submission/user/${id}/statistics?token=${authorization}`
     )
       .then((response) => {
         setLoading(false);

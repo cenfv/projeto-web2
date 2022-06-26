@@ -3,8 +3,18 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const jwt = require("jsonwebtoken");
 const checkToken = require("../helpers/checkToken");
+const checkTokenQueryParam = require("../helpers/checkTokenQueryParam");
 
-router.get("/", checkToken.checkTokenBearer, async function (req, res, next) {
+router.get("/", async function (req, res, next) {
+  const token = req.query.token;
+  const tokenRes = checkTokenQueryParam.checkTokenQueryParam(token);
+  if (tokenRes === false) {
+    return res
+      .status(401)
+      .json({ msg: "User not authenticated", redirect_url: "/login" });
+  } else {
+    req.id = tokenRes;
+  }
   try {
     const user = await userController.getUserById(req.id);
     return res.status(200).json({

@@ -70,11 +70,10 @@ export function Question() {
         );
   const handleLoadQuiz = async () => {
     setLoading(true);
-    Axios.get(`${process.env.REACT_APP_API_URL}/quiz`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    }).then((response) => {
+    const authorization = localStorage.getItem("authorization");
+    Axios.get(
+      `${process.env.REACT_APP_API_URL}/quiz?token=${authorization}`
+    ).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setQuizzes(response.data.quizzes);
@@ -89,14 +88,10 @@ export function Question() {
   }, [selectedQuiz]);
   const handleLoadQuestion = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     if (selectedDifficulty.id === 4) {
       Axios.get(
-        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("authorization"),
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}?token=${authorization}`
       ).then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -105,12 +100,7 @@ export function Question() {
       });
     } else {
       Axios.get(
-        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}&difficulty=${selectedDifficulty.id}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("authorization"),
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/question?quiz=${selectedQuiz._id}&difficulty=${selectedDifficulty.id}?token=${authorization}`
       ).then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -146,13 +136,9 @@ export function Question() {
             <div className="flex mt-8  justify-end">
               <button
                 onClick={() => {
+                  const authorization = localStorage.getItem("authorization");
                   Axios.get(
-                    `${process.env.REACT_APP_API_URL}/question/random/question`,
-                    {
-                      headers: {
-                        authorization: localStorage.getItem("authorization"),
-                      },
-                    }
+                    `${process.env.REACT_APP_API_URL}/question/random/question?token=${authorization}`
                   ).then((response) => {
                     setLoading(false);
                     if (

@@ -20,13 +20,9 @@ export function QuestionContent() {
   const navigate = useNavigate();
   const handleLoadQuestion = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     Axios.get(
-      `${process.env.REACT_APP_API_URL}/question-alternative/question/${id}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }
+      `${process.env.REACT_APP_API_URL}/question-alternative/question/${id}?token=${authorization}`
     )
       .then((response) => {
         setLoading(false);
@@ -46,16 +42,11 @@ export function QuestionContent() {
   };
   const handleSubmitQuestion = async (selectedAlternative, index) => {
     setLoading(true);
-
+    const authorization = localStorage.getItem("authorization");
     return Axios.post(
-      `${process.env.REACT_APP_API_URL}/submission/${questionAlternative._id}`,
+      `${process.env.REACT_APP_API_URL}/submission/${questionAlternative._id}?token=${authorization}`,
       {
         choice: selectedAlternative._id,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     ).then((response) => {
       setLoading(false);

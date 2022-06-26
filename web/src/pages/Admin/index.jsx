@@ -30,11 +30,10 @@ export function Admin() {
 
   let navigate = useNavigate();
   const handleGetUserPermission = async () => {
-    return await Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    })
+    const authorization = localStorage.getItem("authorization");
+    return await Axios.get(
+      `${process.env.REACT_APP_API_URL}/auth?token=${authorization}`
+    )
       .then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -60,11 +59,10 @@ export function Admin() {
 
   const handleLoadUser = async () => {
     setLoading(true);
-    Axios.get(`${process.env.REACT_APP_API_URL}/user`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    }).then((response) => {
+    const authorization = localStorage.getItem("authorization");
+    Axios.get(
+      `${process.env.REACT_APP_API_URL}/user?token=${authorization}`
+    ).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setUsers(response.data.user);
@@ -78,18 +76,14 @@ export function Admin() {
 
   const handleLoadUserSubmissionsByUserId = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     let string;
 
     if (selectedFilter.id === 0) {
       string = "&correctOnly=true";
     }
     Axios.get(
-      `${process.env.REACT_APP_API_URL}/submission/user/${selectedUser._id}?page=${page}&limit=10${string}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }
+      `${process.env.REACT_APP_API_URL}/submission/user/${selectedUser._id}?page=${page}&limit=10${string}?token=${authorization}`
     )
       .then((response) => {
         setLoading(false);

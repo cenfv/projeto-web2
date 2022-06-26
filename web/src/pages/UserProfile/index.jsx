@@ -28,11 +28,10 @@ export function UserProfile() {
   });
   useEffect(() => {
     setLoading(true);
-    Axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    }).then((response) => {
+    const authorization = localStorage.getItem("authorization");
+    Axios.get(
+      `${process.env.REACT_APP_API_URL}/user/${id}?token=${authorization}`
+    ).then((response) => {
       setLoading(false);
       if (response.status === 200 && response.statusText === "OK") {
         setUser({
@@ -54,18 +53,14 @@ export function UserProfile() {
 
   const handleUpdateUser = async () => {
     setLoading(true);
+    const authorization = localStorage.getItem("authorization");
     Axios.put(
-      `${process.env.REACT_APP_API_URL}/user/${user.id}`,
+      `${process.env.REACT_APP_API_URL}/user/${user.id}?token=${authorization}`,
       {
         firstName: user.firstName,
         lastName: user.lastName,
         password: user.password,
         gender: user.gender,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
       }
     )
       .then((response) => {

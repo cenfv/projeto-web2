@@ -18,11 +18,10 @@ export function DashboardNavBar({ text }) {
 
   const handleGetUserPermission = async () => {
     setLoading(true);
-    return Axios.get(`${process.env.REACT_APP_API_URL}/auth`, {
-      headers: {
-        authorization: localStorage.getItem("authorization"),
-      },
-    })
+    const authorization = localStorage.getItem("authorization");
+    return Axios.get(
+      `${process.env.REACT_APP_API_URL}/auth?token=${authorization}`
+    )
       .then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
